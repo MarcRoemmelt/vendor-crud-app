@@ -1,0 +1,5 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+[ -n "$HUSKY" ] && exit 0
+exec < /dev/tty && npx cz --hook || true

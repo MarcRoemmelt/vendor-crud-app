@@ -1,0 +1,14 @@
+{
+    "version": 2,
+    "projects": {
+        "client": "apps/client",
+        "client-e2e": "apps/client-e2e",
+        "client-features-pages-create": "libs/client/features/pages/create",
+        "client-features-pages-entry": "libs/client/features/pages/entry",
+        "client-ui-ic-button": "libs/client/ui/ic-button",
+        "features-react-intl": "libs/shared/features/react-intl",
+        "server": "apps/server",
+        "shared-ui-menu": "libs/shared/ui/menu",
+        "ui-buttons": "libs/shared/ui/buttons"
+    }
+}

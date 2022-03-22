@@ -1,0 +1,12 @@
+{
+    "eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
+    // Make ESLint look for a package.json / .eslintrc in current workingDirectory
+    "eslint.workingDirectories": [{ "mode": "auto" }],
+    "editor.formatOnSave": false,
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": true,
+    },
+    "css.validate": false,
+    "less.validate": false,
+    "scss.validate": false
+}
