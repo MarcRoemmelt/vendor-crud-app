@@ -2,9 +2,17 @@
     "version": 2,
     "projects": {
         "client": "apps/client",
-        "client-e2e": "apps/client-e2e",
-        "client-features-pages-create": "libs/client/features/pages/create",
+        "client-data-access-auth-api": "libs/client/data-access/auth-api",
+        "client-data-access-auth-store": "libs/client/data-access/auth-store",
+        "client-data-access-products-api": "libs/client/data-access/products-api",
+        "client-data-access-products-store": "libs/client/data-access/products-store",
+        "client-data-access-user-api": "libs/client/data-access/user-api",
+        "client-data-access-user-store": "libs/client/data-access/user-store",
+        "client-features-pages-buy": "libs/client/features/pages/buy",
+        "client-features-pages-deposit": "libs/client/features/pages/deposit",
         "client-features-pages-entry": "libs/client/features/pages/entry",
+        "client-features-pages-profile": "libs/client/features/pages/profile",
+        "client-features-pages-sell": "libs/client/features/pages/sell",
         "client-ui-ic-button": "libs/client/ui/ic-button",
         "features-react-intl": "libs/shared/features/react-intl",
         "server": "apps/server",
@@ -13,8 +21,7 @@
         "server-features-deposit": "libs/server/features/deposit",
         "server-features-products": "libs/server/features/products",
         "server-features-users": "libs/server/features/users",
-        "shared-ui-menu": "libs/shared/ui/menu",
-        "shared-utility-helper-functions": "libs/shared/utility/helper-functions",
-        "ui-buttons": "libs/shared/ui/buttons"
+        "shared-data-access-superagent": "libs/shared/data-access/superagent",
+        "shared-utility-helper-functions": "libs/shared/utility/helper-functions"
     }
 }
