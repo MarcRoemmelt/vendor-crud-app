@@ -1,0 +1,23 @@
+{
+    "root": "libs/client/ui/ic-button",
+    "sourceRoot": "libs/client/ui/ic-button/src",
+    "projectType": "library",
+    "tags": [],
+    "targets": {
+        "lint": {
+            "executor": "@nrwl/linter:eslint",
+            "outputs": ["{options.outputFile}"],
+            "options": {
+                "lintFilePatterns": ["libs/client/ui/ic-button/**/*.{ts,tsx,js,jsx}"]
+            }
+        },
+        "test": {
+            "executor": "@nrwl/jest:jest",
+            "outputs": ["coverage/libs/client/ui/ic-button"],
+            "options": {
+                "jestConfig": "libs/client/ui/ic-button/jest.config.js",
+                "passWithNoTests": true
+            }
+        }
+    }
+}

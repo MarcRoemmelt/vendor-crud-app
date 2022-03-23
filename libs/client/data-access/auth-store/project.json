@@ -1,0 +1,32 @@
+{
+    "root": "libs/client/data-access/auth-store",
+    "sourceRoot": "libs/client/data-access/auth-store/src",
+    "targets": {
+        "build": {
+            "executor": "@nrwl/js:tsc",
+            "outputs": ["{options.outputPath}"],
+            "options": {
+                "outputPath": "dist/libs/client/data-access/auth-store",
+                "main": "libs/client/data-access/auth-store/src/index.ts",
+                "tsConfig": "libs/client/data-access/auth-store/tsconfig.lib.json",
+                "assets": ["libs/client/data-access/auth-store/*.md"]
+            }
+        },
+        "lint": {
+            "executor": "@nrwl/linter:eslint",
+            "outputs": ["{options.outputFile}"],
+            "options": {
+                "lintFilePatterns": ["libs/client/data-access/auth-store/**/*.ts"]
+            }
+        },
+        "test": {
+            "executor": "@nrwl/jest:jest",
+            "outputs": ["coverage/libs/client/data-access/auth-store"],
+            "options": {
+                "jestConfig": "libs/client/data-access/auth-store/jest.config.js",
+                "passWithNoTests": true
+            }
+        }
+    },
+    "tags": []
+}

@@ -1,0 +1,23 @@
+{
+    "root": "libs/client/features/pages/entry",
+    "sourceRoot": "libs/client/features/pages/entry/src",
+    "projectType": "library",
+    "tags": [],
+    "targets": {
+        "lint": {
+            "executor": "@nrwl/linter:eslint",
+            "outputs": ["{options.outputFile}"],
+            "options": {
+                "lintFilePatterns": ["libs/client/features/pages/entry/**/*.{ts,tsx,js,jsx}"]
+            }
+        },
+        "test": {
+            "executor": "@nrwl/jest:jest",
+            "outputs": ["coverage/libs/client/features/pages/entry"],
+            "options": {
+                "jestConfig": "libs/client/features/pages/entry/jest.config.js",
+                "passWithNoTests": true
+            }
+        }
+    }
+}

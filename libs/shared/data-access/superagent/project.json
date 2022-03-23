@@ -1,0 +1,32 @@
+{
+    "root": "libs/shared/data-access/superagent",
+    "sourceRoot": "libs/shared/data-access/superagent/src",
+    "targets": {
+        "build": {
+            "executor": "@nrwl/js:tsc",
+            "outputs": ["{options.outputPath}"],
+            "options": {
+                "outputPath": "dist/libs/shared/data-access/superagent",
+                "main": "libs/shared/data-access/superagent/src/index.ts",
+                "tsConfig": "libs/shared/data-access/superagent/tsconfig.lib.json",
+                "assets": ["libs/shared/data-access/superagent/*.md"]
+            }
+        },
+        "lint": {
+            "executor": "@nrwl/linter:eslint",
+            "outputs": ["{options.outputFile}"],
+            "options": {
+                "lintFilePatterns": ["libs/shared/data-access/superagent/**/*.ts"]
+            }
+        },
+        "test": {
+            "executor": "@nrwl/jest:jest",
+            "outputs": ["coverage/libs/shared/data-access/superagent"],
+            "options": {
+                "jestConfig": "libs/shared/data-access/superagent/jest.config.js",
+                "passWithNoTests": true
+            }
+        }
+    },
+    "tags": []
+}

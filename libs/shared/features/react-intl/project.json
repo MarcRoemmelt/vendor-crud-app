@@ -1,0 +1,23 @@
+{
+    "root": "libs/shared/features/react-intl",
+    "sourceRoot": "libs/shared/features/react-intl/src",
+    "projectType": "library",
+    "tags": [],
+    "targets": {
+        "lint": {
+            "executor": "@nrwl/linter:eslint",
+            "outputs": ["{options.outputFile}"],
+            "options": {
+                "lintFilePatterns": ["libs/shared/features/react-intl/**/*.{ts,tsx,js,jsx}"]
+            }
+        },
+        "test": {
+            "executor": "@nrwl/jest:jest",
+            "outputs": ["coverage/libs/shared/features/react-intl"],
+            "options": {
+                "jestConfig": "libs/shared/features/react-intl/jest.config.js",
+                "passWithNoTests": true
+            }
+        }
+    }
+}

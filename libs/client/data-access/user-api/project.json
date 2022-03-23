@@ -1,0 +1,32 @@
+{
+    "root": "libs/client/data-access/user-api",
+    "sourceRoot": "libs/client/data-access/user-api/src",
+    "targets": {
+        "build": {
+            "executor": "@nrwl/js:tsc",
+            "outputs": ["{options.outputPath}"],
+            "options": {
+                "outputPath": "dist/libs/client/data-access/user-api",
+                "main": "libs/client/data-access/user-api/src/index.ts",
+                "tsConfig": "libs/client/data-access/user-api/tsconfig.lib.json",
+                "assets": ["libs/client/data-access/user-api/*.md"]
+            }
+        },
+        "lint": {
+            "executor": "@nrwl/linter:eslint",
+            "outputs": ["{options.outputFile}"],
+            "options": {
+                "lintFilePatterns": ["libs/client/data-access/user-api/**/*.ts"]
+            }
+        },
+        "test": {
+            "executor": "@nrwl/jest:jest",
+            "outputs": ["coverage/libs/client/data-access/user-api"],
+            "options": {
+                "jestConfig": "libs/client/data-access/user-api/jest.config.js",
+                "passWithNoTests": true
+            }
+        }
+    },
+    "tags": []
+}

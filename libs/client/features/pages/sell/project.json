@@ -1,0 +1,23 @@
+{
+    "root": "libs/client/features/pages/sell",
+    "sourceRoot": "libs/client/features/pages/sell/src",
+    "projectType": "library",
+    "tags": [],
+    "targets": {
+        "lint": {
+            "executor": "@nrwl/linter:eslint",
+            "outputs": ["{options.outputFile}"],
+            "options": {
+                "lintFilePatterns": ["libs/client/features/pages/sell/**/*.{ts,tsx,js,jsx}"]
+            }
+        },
+        "test": {
+            "executor": "@nrwl/jest:jest",
+            "outputs": ["coverage/libs/client/features/pages/sell"],
+            "options": {
+                "jestConfig": "libs/client/features/pages/sell/jest.config.js",
+                "passWithNoTests": true
+            }
+        }
+    }
+}

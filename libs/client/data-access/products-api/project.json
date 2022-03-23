@@ -1,0 +1,32 @@
+{
+    "root": "libs/client/data-access/products-api",
+    "sourceRoot": "libs/client/data-access/products-api/src",
+    "targets": {
+        "build": {
+            "executor": "@nrwl/js:tsc",
+            "outputs": ["{options.outputPath}"],
+            "options": {
+                "outputPath": "dist/libs/client/data-access/products-api",
+                "main": "libs/client/data-access/products-api/src/index.ts",
+                "tsConfig": "libs/client/data-access/products-api/tsconfig.lib.json",
+                "assets": ["libs/client/data-access/products-api/*.md"]
+            }
+        },
+        "lint": {
+            "executor": "@nrwl/linter:eslint",
+            "outputs": ["{options.outputFile}"],
+            "options": {
+                "lintFilePatterns": ["libs/client/data-access/products-api/**/*.ts"]
+            }
+        },
+        "test": {
+            "executor": "@nrwl/jest:jest",
+            "outputs": ["coverage/libs/client/data-access/products-api"],
+            "options": {
+                "jestConfig": "libs/client/data-access/products-api/jest.config.js",
+                "passWithNoTests": true
+            }
+        }
+    },
+    "tags": []
+}

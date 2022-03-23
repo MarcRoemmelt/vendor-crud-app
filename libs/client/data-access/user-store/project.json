@@ -1,0 +1,32 @@
+{
+    "root": "libs/client/data-access/user-store",
+    "sourceRoot": "libs/client/data-access/user-store/src",
+    "targets": {
+        "build": {
+            "executor": "@nrwl/js:tsc",
+            "outputs": ["{options.outputPath}"],
+            "options": {
+                "outputPath": "dist/libs/client/data-access/user-store",
+                "main": "libs/client/data-access/user-store/src/index.ts",
+                "tsConfig": "libs/client/data-access/user-store/tsconfig.lib.json",
+                "assets": ["libs/client/data-access/user-store/*.md"]
+            }
+        },
+        "lint": {
+            "executor": "@nrwl/linter:eslint",
+            "outputs": ["{options.outputFile}"],
+            "options": {
+                "lintFilePatterns": ["libs/client/data-access/user-store/**/*.ts"]
+            }
+        },
+        "test": {
+            "executor": "@nrwl/jest:jest",
+            "outputs": ["coverage/libs/client/data-access/user-store"],
+            "options": {
+                "jestConfig": "libs/client/data-access/user-store/jest.config.js",
+                "passWithNoTests": true
+            }
+        }
+    },
+    "tags": []
+}
