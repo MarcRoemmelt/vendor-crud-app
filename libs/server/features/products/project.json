@@ -1,0 +1,22 @@
+{
+    "root": "libs/server/features/products",
+    "sourceRoot": "libs/server/features/products/src",
+    "targets": {
+        "lint": {
+            "executor": "@nrwl/linter:eslint",
+            "outputs": ["{options.outputFile}"],
+            "options": {
+                "lintFilePatterns": ["libs/server/features/products/**/*.ts"]
+            }
+        },
+        "test": {
+            "executor": "@nrwl/jest:jest",
+            "outputs": ["coverage/libs/server/features/products"],
+            "options": {
+                "jestConfig": "libs/server/features/products/jest.config.js",
+                "passWithNoTests": true
+            }
+        }
+    },
+    "tags": []
+}

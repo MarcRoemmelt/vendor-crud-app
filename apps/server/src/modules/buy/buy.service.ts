@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { Deposit } from '../deposit/entities/deposit.entity';
-import { Product } from '../products/entities/product.entity';
-import { ProductsService } from '../products/products.service';
-import { UsersService } from '../users/users.service';
+
+import { Deposit } from '@mr/server/features/deposit';
+import { ProductsService, Product } from '@mr/server/features/products';
+import { UsersService } from '@mr/server/features/users';
+
 import { BuyProductDto } from './dto/buy-product.dto';
 
 @Injectable()

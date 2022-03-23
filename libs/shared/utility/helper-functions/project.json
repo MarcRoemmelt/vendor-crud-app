@@ -1,0 +1,32 @@
+{
+    "root": "libs/shared/utility/helper-functions",
+    "sourceRoot": "libs/shared/utility/helper-functions/src",
+    "targets": {
+        "build": {
+            "executor": "@nrwl/js:swc",
+            "outputs": ["{options.outputPath}"],
+            "options": {
+                "outputPath": "dist/libs/shared/utility/helper-functions",
+                "main": "libs/shared/utility/helper-functions/src/index.ts",
+                "tsConfig": "libs/shared/utility/helper-functions/tsconfig.lib.json",
+                "assets": ["libs/shared/utility/helper-functions/*.md"]
+            }
+        },
+        "lint": {
+            "executor": "@nrwl/linter:eslint",
+            "outputs": ["{options.outputFile}"],
+            "options": {
+                "lintFilePatterns": ["libs/shared/utility/helper-functions/**/*.ts"]
+            }
+        },
+        "test": {
+            "executor": "@nrwl/jest:jest",
+            "outputs": ["coverage/libs/shared/utility/helper-functions"],
+            "options": {
+                "jestConfig": "libs/shared/utility/helper-functions/jest.config.js",
+                "passWithNoTests": true
+            }
+        }
+    },
+    "tags": []
+}

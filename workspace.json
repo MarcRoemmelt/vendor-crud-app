@@ -8,7 +8,13 @@
         "client-ui-ic-button": "libs/client/ui/ic-button",
         "features-react-intl": "libs/shared/features/react-intl",
         "server": "apps/server",
+        "server-features-authetication": "libs/server/features/authetication",
+        "server-features-casl": "libs/server/features/casl",
+        "server-features-deposit": "libs/server/features/deposit",
+        "server-features-products": "libs/server/features/products",
+        "server-features-users": "libs/server/features/users",
         "shared-ui-menu": "libs/shared/ui/menu",
+        "shared-utility-helper-functions": "libs/shared/utility/helper-functions",
         "ui-buttons": "libs/shared/ui/buttons"
     }
 }

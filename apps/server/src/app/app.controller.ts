@@ -1,13 +1,11 @@
 import { Controller, Request, Post, UseGuards } from '@nestjs/common';
 import { FastifyRequest } from 'fastify';
 
-import { Public } from '../decorators/public.decorator';
-import { AuthService } from '../modules/auth/auth.service';
-import { LocalAuthGuard } from '../modules/auth/guards/local-auth.guard';
+import { AuthenticationService, LocalAuthGuard, Public } from '@mr/server/features/authetication';
 
 @Controller()
 export class AppController {
-    constructor(private authService: AuthService) {}
+    constructor(private authService: AuthenticationService) {}
 
     @UseGuards(LocalAuthGuard)
     @Post('login')

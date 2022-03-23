@@ -1,0 +1,22 @@
+{
+    "root": "libs/server/features/deposit",
+    "sourceRoot": "libs/server/features/deposit/src",
+    "targets": {
+        "lint": {
+            "executor": "@nrwl/linter:eslint",
+            "outputs": ["{options.outputFile}"],
+            "options": {
+                "lintFilePatterns": ["libs/server/features/deposit/**/*.ts"]
+            }
+        },
+        "test": {
+            "executor": "@nrwl/jest:jest",
+            "outputs": ["coverage/libs/server/features/deposit"],
+            "options": {
+                "jestConfig": "libs/server/features/deposit/jest.config.js",
+                "passWithNoTests": true
+            }
+        }
+    },
+    "tags": []
+}

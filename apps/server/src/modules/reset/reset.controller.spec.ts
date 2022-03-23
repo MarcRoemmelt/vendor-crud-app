@@ -1,5 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { UsersService } from '../users/users.service';
+
+import { UsersService } from '@mr/server/features/users';
+
 import { ResetController } from './reset.controller';
 
 describe('ResetController', () => {

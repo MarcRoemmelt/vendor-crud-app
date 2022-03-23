@@ -1,6 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { ProductsService } from '../products/products.service';
-import { UsersService } from '../users/users.service';
+
+import { ProductsService } from '@mr/server/features/products';
+import { UsersService } from '@mr/server/features/users';
+
 import { BuyService } from './buy.service';
 
 describe('BuyService', () => {

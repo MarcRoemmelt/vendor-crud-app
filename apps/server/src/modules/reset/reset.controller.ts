@@ -1,8 +1,9 @@
 import { Controller, Post, Req } from '@nestjs/common';
-import { Roles } from '../../decorators/roles.decorator';
-import { Role } from '../../enums/role.enum';
 
-import { UsersService } from '../users/users.service';
+import { UsersService } from '@mr/server/features/users';
+import { Roles } from '@mr/server/features/authetication';
+
+import { Role } from '../../enums/role.enum';
 
 @Controller('reset')
 export class ResetController {

@@ -1,0 +1,32 @@
+{
+    "root": "libs/server/features/casl",
+    "sourceRoot": "libs/server/features/casl/src",
+    "targets": {
+        "build": {
+            "executor": "@nrwl/js:swc",
+            "outputs": ["{options.outputPath}"],
+            "options": {
+                "outputPath": "dist/libs/server/features/casl",
+                "main": "libs/server/features/casl/src/index.ts",
+                "tsConfig": "libs/server/features/casl/tsconfig.lib.json",
+                "assets": ["libs/server/features/casl/*.md"]
+            }
+        },
+        "lint": {
+            "executor": "@nrwl/linter:eslint",
+            "outputs": ["{options.outputFile}"],
+            "options": {
+                "lintFilePatterns": ["libs/server/features/casl/**/*.ts"]
+            }
+        },
+        "test": {
+            "executor": "@nrwl/jest:jest",
+            "outputs": ["coverage/libs/server/features/casl"],
+            "options": {
+                "jestConfig": "libs/server/features/casl/jest.config.js",
+                "passWithNoTests": true
+            }
+        }
+    },
+    "tags": []
+}

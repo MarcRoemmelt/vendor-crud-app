@@ -3,24 +3,27 @@ import { APP_GUARD } from '@nestjs/core';
 import { ConfigModule } from '@nestjs/config';
 import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
 
-import { CaslModule } from '../modules/casl/casl.module';
-import { PoliciesGuard } from '../guards/policies-guard/policies-guard.guard';
-import { RolesGuard } from '../guards/roles-guard.guard';
-import { AuthModule } from '../modules/auth/auth.module';
-import { JwtAuthGuard } from '../modules/auth/guards/jwt.guard';
-import { DepositModule } from '../modules/deposit/deposit.module';
-import { ProductsModule } from '../modules/products/products.module';
-import { UsersModule } from '../modules/users/users.module';
-import { AppController } from './app.controller';
-import { BuyModule } from '../modules/buy/buy.module';
-import { ResetModule } from '../modules/reset/reset.module';
+import { AuthenticationModule, JwtAuthGuard, PoliciesGuard, RolesGuard } from '@mr/server/features/authetication';
+import { CaslModule } from '@mr/server/features/casl';
+import { User, UsersModule, UsersService } from '@mr/server/features/users';
+import { DepositModule } from '@mr/server/features/deposit';
+import { Product, ProductsModule } from '@mr/server/features/products';
 
+import { AppController } from './app.controller';
+import { ResetModule } from '../modules/reset/reset.module';
+import { BuyModule } from '../modules/buy/buy.module';
 @Module({
     imports: [
-        AuthModule,
+        AuthenticationModule.register({
+            UsersService,
+        }),
         BuyModule,
-        CaslModule,
-        ConfigModule.forRoot(),
+        CaslModule.register({
+            subjects: [User, Product],
+        }),
+        ConfigModule.forRoot({
+            isGlobal: true,
+        }),
         DepositModule,
         ProductsModule,
         ResetModule,
