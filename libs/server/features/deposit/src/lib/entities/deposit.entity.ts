@@ -25,8 +25,8 @@ export class Deposit {
         return Object.entries(this.coins).reduce((acc, [value, amount]) => acc + Number(value) * amount, 0);
     }
 
-    public add(deposit: Deposit | Coins) {
-        const addedCoins = deposit instanceof Deposit ? deposit.coins : deposit;
+    public add(deposit: Deposit | Coins | number) {
+        const addedCoins = this.normalizeCoinsOrDepositOrAmount(deposit);
         const newCoins = Object.entries(this.coins).reduce(
             (coins, [value, amount]) => ({
                 ...coins,
@@ -39,12 +39,18 @@ export class Deposit {
     }
 
     public subtract(amount: number): Deposit {
-        const result = this.findOptimalChange(this.balance - amount, this.denums);
+        const result = this.findOptimalChange(this.balance - amount);
         return new Deposit(result);
     }
 
     public toArray() {
         return Object.entries(this.coins);
+    }
+
+    private normalizeCoinsOrDepositOrAmount(coinsOrDepositOrAmount: Deposit | Coins | number) {
+        if (coinsOrDepositOrAmount instanceof Deposit) return coinsOrDepositOrAmount.coins;
+        if (typeof coinsOrDepositOrAmount === 'number') return this.findOptimalChange(coinsOrDepositOrAmount);
+        return coinsOrDepositOrAmount;
     }
 
     /**
@@ -55,7 +61,7 @@ export class Deposit {
      * of the coin and the value the amount of this coin.
      */
     /* eslint-disable security/detect-object-injection, max-lines-per-function */
-    public findOptimalChange(amount: number, _denominations: number[]): Coins {
+    private findOptimalChange(amount: number, _denominations: number[] = this.denums): Coins {
         const denominations = _denominations.sort();
 
         const arrayOfOPT = Array(amount + 1)

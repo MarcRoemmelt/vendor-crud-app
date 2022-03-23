@@ -18,6 +18,7 @@ export class BuyService {
     async buy({ amount, productId }: BuyProductDto, userId: string) {
         const product = await this.productsService.findOne(productId);
         const buyer = await this.usersService.findOne(userId);
+        const seller = await this.usersService.findOne(product.sellerId);
         if (amount > product.amountAvailable) throw new Error('Amount too high.');
 
         const totalPrice = product.cost * amount;
@@ -28,6 +29,9 @@ export class BuyService {
 
         const newDeposit = deposit.subtract(totalPrice);
         await this.usersService.update(userId, { deposit: newDeposit.coins });
+        const newSellerDeposit = await this.depositService.createDeposit(seller.deposit).add(totalPrice);
+
+        await this.usersService.update(seller._id, { deposit: newSellerDeposit.coins });
         await this.productsService.update(productId, { amountAvailable: product.amountAvailable - amount });
 
         return {
