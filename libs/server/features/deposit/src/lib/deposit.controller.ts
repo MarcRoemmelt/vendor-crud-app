@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Req } from '@nestjs/common';
+import { Body, Controller, HttpCode, Post, Req } from '@nestjs/common';
 
 import { Roles, Role, CheckPolicies } from '@mr/server/features/authetication';
 import { UpdateUserPolicy } from '@mr/server/features/users';
@@ -11,6 +11,7 @@ export class DepositController {
     constructor(private readonly depositService: DepositService) {}
 
     @Post()
+    @HttpCode(200)
     @Roles(Role.Buyer)
     @CheckPolicies(UpdateUserPolicy)
     async deposit(@Req() req, @Body() depositDto: DepositDto) {

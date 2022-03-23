@@ -28,13 +28,14 @@ const contentSecurityPolicy = {
         scriptSrc: [`'self'`, `https: 'unsafe-inline'`],
     },
 };
+// eslint-disable-next-line max-lines-per-function
 async function bootstrap() {
     const app = await NestFactory.create<NestFastifyApplication>(AppModule, new FastifyAdapter({ logger: true }));
     const globalPrefix = 'api';
-    app.register(fastifyCookie);
-    app.register(fastifyCsrf);
-    app.register(fastifyCors);
-    app.register(fastifyHelmet, {
+    await app.register(fastifyCookie);
+    await app.register(fastifyCsrf);
+    await app.register(fastifyCors);
+    await app.register(fastifyHelmet, {
         contentSecurityPolicy,
     });
     app.setGlobalPrefix(globalPrefix);

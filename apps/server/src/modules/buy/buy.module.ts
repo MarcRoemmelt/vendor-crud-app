@@ -7,13 +7,15 @@ import { UsersService } from '@mr/server/features/users';
 
 import { BuyController } from './buy.controller';
 import { BuyService } from './buy.service';
+import { DepositService } from '@mr/server/features/deposit';
 
 @Module({
     controllers: [BuyController],
     providers: [
+        BuyService,
+        DepositService,
         ProductsService,
         UsersService,
-        BuyService,
         {
             provide: APP_GUARD,
             useClass: ThrottlerGuard,

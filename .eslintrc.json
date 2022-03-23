@@ -33,6 +33,12 @@
             }
         },
         {
+            "files": ["*.spec.ts", "*.spec.tsx", "*.e2e-spec.ts", "*.e2e-spec.tsx"],
+            "rules": {
+                "max-lines-per-function": "off"
+            }
+        },
+        {
             "files": ["*.ts", "*.tsx"],
             "extends": ["plugin:@nrwl/nx/typescript"],
             "rules": {}

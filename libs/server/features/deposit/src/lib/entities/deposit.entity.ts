@@ -31,7 +31,7 @@ export class Deposit {
             (coins, [value, amount]) => ({
                 ...coins,
                 // eslint-disable-next-line security/detect-object-injection
-                [value]: amount + addedCoins[value] ?? 0,
+                [value]: amount + (addedCoins[value] ?? 0),
             }),
             {} as Coins,
         );
@@ -39,7 +39,7 @@ export class Deposit {
     }
 
     public subtract(amount: number): Deposit {
-        const result = this.findOptimalChange(amount, this.denums);
+        const result = this.findOptimalChange(this.balance - amount, this.denums);
         return new Deposit(result);
     }
 

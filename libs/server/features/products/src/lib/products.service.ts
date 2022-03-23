@@ -9,30 +9,33 @@ import { Product } from './entities/product.entity';
 export class ProductsService {
     private products: Product[] = [];
 
-    create(createProductDto: CreateProductDto, userId: string) {
+    async create(createProductDto: CreateProductDto, userId: string) {
         const product: Product = {
             _id: uuidv4(),
             sellerId: userId,
             ...createProductDto,
         };
-        return this.products.push(product);
+        this.products.push(product);
+        return product;
     }
 
-    findAll() {
+    async findAll() {
         return this.products;
     }
 
-    findOne(_productid: string) {
+    async findOne(_productid: string) {
         return this.products.find(({ _id }) => _id === _productid);
     }
 
-    update(_productid: string, updateProductDto: UpdateProductDto) {
+    async update(_productid: string, updateProductDto: UpdateProductDto) {
         const product = this.products.find(({ _id }) => _id === _productid);
         const updatedProduct = Object.assign(product, updateProductDto);
         return updatedProduct;
     }
 
-    remove(_productid: string) {
+    async remove(_productid: string) {
+        const removedProduct = this.products.find(({ _id }) => _id === _productid);
         this.products = this.products.filter(({ _id }) => _id !== _productid);
+        return removedProduct;
     }
 }
