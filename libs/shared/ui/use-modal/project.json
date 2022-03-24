@@ -1,0 +1,23 @@
+{
+    "root": "libs/shared/ui/use-modal",
+    "sourceRoot": "libs/shared/ui/use-modal/src",
+    "projectType": "library",
+    "tags": [],
+    "targets": {
+        "lint": {
+            "executor": "@nrwl/linter:eslint",
+            "outputs": ["{options.outputFile}"],
+            "options": {
+                "lintFilePatterns": ["libs/shared/ui/use-modal/**/*.{ts,tsx,js,jsx}"]
+            }
+        },
+        "test": {
+            "executor": "@nrwl/jest:jest",
+            "outputs": ["coverage/libs/shared/ui/use-modal"],
+            "options": {
+                "jestConfig": "libs/shared/ui/use-modal/jest.config.js",
+                "passWithNoTests": true
+            }
+        }
+    }
+}
