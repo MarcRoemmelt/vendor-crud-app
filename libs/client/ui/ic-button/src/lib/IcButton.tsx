@@ -1,5 +1,5 @@
 import type { AriaButtonProps } from '@react-types/button';
-import { ButtonHTMLAttributes, ReactNode, useRef } from 'react';
+import { ButtonHTMLAttributes, MouseEventHandler, ReactNode, useRef } from 'react';
 import { useButton } from '@react-aria/button';
 import { useFocusRing } from '@react-aria/focus';
 import { useHover } from '@react-aria/interactions';
@@ -9,22 +9,61 @@ import Link from 'next/link';
 import { AriaLinkOptions, useLink } from '@react-aria/link';
 import { mergeProps } from '@react-aria/utils';
 
-export interface IcButtonProps {
-    primary?: boolean;
-    secondary?: boolean;
-    tertiary?: boolean;
-    href?: string;
-    children: ReactNode;
-}
+type ButtonAction =
+    | {
+          type?: never;
+          href: string;
+          onClick?: never;
+      }
+    | {
+          type?: never;
+          href?: never;
+          onClick: MouseEventHandler<HTMLButtonElement>;
+      }
+    | {
+          type: 'submit';
+          href?: never;
+          onClick?: never;
+      };
 
-const buttonStyles = css<ButtonHTMLAttributes<HTMLButtonElement>>`
+export type IcButtonProps =
+    | {
+          primary?: boolean;
+          secondary?: boolean;
+          tertiary?: boolean;
+          children: ReactNode;
+          size?: Size;
+      } & ButtonAction;
+
+type Size = 'xs' | 's' | 'm' | 'l' | 'xl';
+
+const buttonStyles = css<ButtonHTMLAttributes<HTMLButtonElement> & { size: Size }>`
     color: ${({ theme }) => theme.primaryColor || 'black'};
     border-color: ${({ theme }) => theme.primaryColor || 'black'};
     background-color: ${({ theme }) => theme.primaryColorContrast || 'white'};
     border-style: solid;
     border-width: 3px;
+    margin-left: 0.1em;
+    margin-right: 0.1em;
 
     cursor: pointer;
+
+    font-size: ${({ size }) => {
+        switch (size) {
+            case 'xl':
+                return '1.6em';
+            case 'l':
+                return '1.3em';
+            case 'm':
+                return '1em';
+            case 's':
+                return '0.8em';
+            case 'xs':
+                return '0.6em';
+            default:
+                return '1em';
+        }
+    }};
 
     font-weight: bold;
 

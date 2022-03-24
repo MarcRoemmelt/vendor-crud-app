@@ -1,10 +1,23 @@
 import { createGlobalStyle } from 'styled-components';
 
 export const GlobalStyles = createGlobalStyle`
+    @font-face {
+        font-family: 'Dosis';
+        src: local('Dosis-SemiBold'), url('/fonts/Dosis-SemiBold.ttf') format('ttf');
+        font-weight: 600;
+        font-style: normal;
+    }
+    @font-face {
+        font-family: 'Dosis';
+        src: local('Dosis-Light'), url('/fonts/Dosis-Light.ttf') format('ttf');
+        font-weight: 200;
+        font-style: normal;
+    }
+
     html {
         -webkit-text-size-adjust: 100%;
-        font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial,
-            Noto Sans, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+        font-family: Dosis, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial,
+        Noto Sans, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
         line-height: 1.5;
         tab-size: 4;
         scroll-behavior: smooth;

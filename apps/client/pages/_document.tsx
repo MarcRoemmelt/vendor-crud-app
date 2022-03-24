@@ -1,7 +1,6 @@
 import { ReactElement } from 'react';
 import Document, { Html, Head, Main, NextScript, DocumentContext } from 'next/document';
 import { ServerStyleSheet } from 'styled-components';
-import { GlobalStyles } from '../theme/GlobalStyles';
 
 export default class CustomDocument extends Document<{
     styleTags: ReactElement[];
@@ -20,7 +19,6 @@ export default class CustomDocument extends Document<{
         return (
             <Html>
                 <Head>{this.props.styleTags}</Head>
-                <GlobalStyles />
                 <body>
                     <Main />
                     <NextScript />
