@@ -8,6 +8,7 @@
         "client-data-access-products-store": "libs/client/data-access/products-store",
         "client-data-access-user-api": "libs/client/data-access/user-api",
         "client-data-access-user-store": "libs/client/data-access/user-store",
+        "client-features-authentication": "libs/client/features/authentication",
         "client-features-pages-buy": "libs/client/features/pages/buy",
         "client-features-pages-deposit": "libs/client/features/pages/deposit",
         "client-features-pages-entry": "libs/client/features/pages/entry",
@@ -22,6 +23,10 @@
         "server-features-products": "libs/server/features/products",
         "server-features-users": "libs/server/features/users",
         "shared-data-access-superagent": "libs/shared/data-access/superagent",
+        "shared-ui-form": "libs/shared/ui/form",
+        "shared-ui-header": "libs/shared/ui/header",
+        "shared-ui-text": "libs/shared/ui/text",
+        "shared-ui-use-modal": "libs/shared/ui/use-modal",
         "shared-utility-helper-functions": "libs/shared/utility/helper-functions"
     }
 }

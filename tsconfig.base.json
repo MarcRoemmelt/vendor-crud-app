@@ -21,6 +21,7 @@
             "@mr/client/data-access/products-store": ["libs/client/data-access/products-store/src/index.ts"],
             "@mr/client/data-access/user-api": ["libs/client/data-access/user-api/src/index.ts"],
             "@mr/client/data-access/user-store": ["libs/client/data-access/user-store/src/index.ts"],
+            "@mr/client/features/authentication": ["libs/client/features/authentication/src/index.ts"],
             "@mr/client/features/pages/buy": ["libs/client/features/pages/buy/src/index.ts"],
             "@mr/client/features/pages/deposit": ["libs/client/features/pages/deposit/src/index.ts"],
             "@mr/client/features/pages/entry": ["libs/client/features/pages/entry/src/index.ts"],
@@ -34,6 +35,10 @@
             "@mr/server/features/users": ["libs/server/features/users/src/index.ts"],
             "@mr/shared/data-access/superagent": ["libs/shared/data-access/superagent/src/index.ts"],
             "@mr/shared/features/react-intl": ["libs/shared/features/react-intl/src/index.ts"],
+            "@mr/shared/ui/form": ["libs/shared/ui/form/src/index.ts"],
+            "@mr/shared/ui/header": ["libs/shared/ui/header/src/index.ts"],
+            "@mr/shared/ui/text": ["libs/shared/ui/text/src/index.ts"],
+            "@mr/shared/ui/use-modal": ["libs/shared/ui/use-modal/src/index.ts"],
             "@mr/shared/utility/helper-functions": ["libs/shared/utility/helper-functions/src/index.ts"]
         }
     },

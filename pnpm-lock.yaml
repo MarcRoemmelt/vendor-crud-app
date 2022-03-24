@@ -33,6 +33,7 @@ specifiers:
     '@react-aria/focus': 3.5.3
     '@react-aria/interactions': 3.8.2
     '@react-aria/link': 3.2.3
+    '@react-aria/overlays': ^3.8.1
     '@react-aria/utils': 3.11.3
     '@swc/cli': 0.1.55
     '@swc/core': 1.2.159
@@ -49,6 +50,7 @@ specifiers:
     '@types/react-dom': 17.0.14
     '@types/react-is': 17.0.3
     '@types/styled-components': 5.1.24
+    '@types/styled-react-modal': ^1.2.2
     '@types/uuid': ^8.3.4
     '@typescript-eslint/eslint-plugin': 5.15.0
     '@typescript-eslint/parser': 5.10.2
@@ -80,6 +82,7 @@ specifiers:
     fastify-helmet: ^7.0.1
     fastify-swagger: ^5.0.0
     fixpack: 4.0.0
+    formik: ^2.2.9
     husky: 7.0.4
     jest: 27.5.1
     lint-staged: 12.3.7
@@ -102,6 +105,7 @@ specifiers:
     regenerator-runtime: 0.13.9
     rxjs: ^7.0.0
     styled-components: 5.3.3
+    styled-react-modal: ^3.0.0
     superagent: ^7.1.1
     swr: 1.2.2
     ts-jest: 27.1.3
@@ -126,6 +130,7 @@ dependencies:
     '@react-aria/focus': 3.5.3_react@17.0.2
     '@react-aria/interactions': 3.8.2_react@17.0.2
     '@react-aria/link': 3.2.3_react@17.0.2
+    '@react-aria/overlays': 3.8.1_react-dom@17.0.2+react@17.0.2
     '@react-aria/utils': 3.11.3_react@17.0.2
     '@types/bcrypt': 5.0.0
     bcrypt: 5.0.1
@@ -137,6 +142,7 @@ dependencies:
     fastify-csrf: 3.1.0
     fastify-helmet: 7.0.1
     fastify-swagger: 5.0.0
+    formik: 2.2.9_react@17.0.2
     mobx: 6.5.0
     mobx-react-lite: 3.3.0_3b110ddd052df537d55bc762cdd4d0b8
     next: 12.1.0_978f344c876a57c1143ffe356b90df31
@@ -151,6 +157,7 @@ dependencies:
     regenerator-runtime: 0.13.9
     rxjs: 7.5.5
     styled-components: 5.3.3_281a4fa50a045c9112baf635f3bc27a7
+    styled-react-modal: 3.0.0_7a082f7d10047d47195aea793f958a14
     superagent: 7.1.1
     swr: 1.2.2_react@17.0.2
     tslib: 2.3.1
@@ -189,6 +196,7 @@ devDependencies:
     '@types/react-dom': 17.0.14
     '@types/react-is': 17.0.3
     '@types/styled-components': 5.1.24
+    '@types/styled-react-modal': 1.2.2
     '@types/uuid': 8.3.4
     '@typescript-eslint/eslint-plugin': 5.15.0_ba1c20829c1baeb0722e85afbd6a1b8d
     '@typescript-eslint/parser': 5.10.2_eslint@8.11.0+typescript@4.6.2
@@ -2446,6 +2454,34 @@ packages:
             }
         dev: true
 
+    /@internationalized/date/3.0.0-alpha.4:
+        resolution:
+            {
+                integrity: sha512-kOJh6ugw8xraC46MLIQq8Cu+FyeCJKuHfY4eQPHkz4rPJmOiPGT0xYTYXqQHWcdFiwYSLNGvk/1DAMN7qRY1EA==,
+            }
+        dependencies:
+            '@babel/runtime': 7.17.8
+        dev: false
+
+    /@internationalized/message/3.0.5:
+        resolution:
+            {
+                integrity: sha512-DMQ9nQHr9XlP8Z0gCCaQ1j8ReuVGW5YrV+ZEMQLoGlHAg+mVILlZPIAgwB/5l3hi6xUIGQovMqpnGT3AypX1ig==,
+            }
+        dependencies:
+            '@babel/runtime': 7.17.8
+            intl-messageformat: 9.11.4
+        dev: false
+
+    /@internationalized/number/3.0.6:
+        resolution:
+            {
+                integrity: sha512-6rKYYY/7V2rm45gg9ugV7VAV/1p5mHudgc1QJxJAdSddRWKz9RmSemV02pwE4k0mbsgvRRsqin7NgEb3LQFX9A==,
+            }
+        dependencies:
+            '@babel/runtime': 7.17.8
+        dev: false
+
     /@istanbuljs/load-nyc-config/1.1.0:
         resolution:
             {
@@ -4349,10 +4385,42 @@ packages:
             react: 17.0.2
         dev: false
 
+    /@react-aria/i18n/3.3.8_react@17.0.2:
+        resolution:
+            {
+                integrity: sha512-9yEaBRJ6Lxd20mUPvzorIJraYp3TD1yKRo4BTTuO/Om9BPSp1VW8JhUuyMZNouo1oQffxddFXqppuayLPwhJlQ==,
+            }
+        peerDependencies:
+            react: ^16.8.0 || ^17.0.0-rc.1
+        dependencies:
+            '@babel/runtime': 7.17.8
+            '@internationalized/date': 3.0.0-alpha.4
+            '@internationalized/message': 3.0.5
+            '@internationalized/number': 3.0.6
+            '@react-aria/ssr': 3.1.2_react@17.0.2
+            '@react-aria/utils': 3.11.3_react@17.0.2
+            '@react-types/shared': 3.11.2_react@17.0.2
+            react: 17.0.2
+        dev: false
+
     /@react-aria/interactions/3.8.2_react@17.0.2:
         resolution:
             {
                 integrity: sha512-AyTTwflthmyNcgIfjzHLdrQTcUJpLer9jMtB7IyTJ90c1eYbd+iy40WbyBZYhQhI8Zkq+q9bfeIOQFlEMDWh8A==,
+            }
+        peerDependencies:
+            react: ^16.8.0 || ^17.0.0-rc.1
+        dependencies:
+            '@babel/runtime': 7.17.8
+            '@react-aria/utils': 3.11.3_react@17.0.2
+            '@react-types/shared': 3.11.2_react@17.0.2
+            react: 17.0.2
+        dev: false
+
+    /@react-aria/interactions/3.8.3_react@17.0.2:
+        resolution:
+            {
+                integrity: sha512-zffWRqhEk4SQNbr5sv3BnMIsmQjtdhXvv3FLn9Ch0HxxGb8VStjrVPEv7r9OtVodab+ThcUehL4NJ8zU/U/4ew==,
             }
         peerDependencies:
             react: ^16.8.0 || ^17.0.0-rc.1
@@ -4380,6 +4448,29 @@ packages:
             react: 17.0.2
         dev: false
 
+    /@react-aria/overlays/3.8.1_react-dom@17.0.2+react@17.0.2:
+        resolution:
+            {
+                integrity: sha512-6r86wO7DlcYXOwufzxuYWkh/lwgwpKYAhKHL8z8DcErX7mbauoeh2Z3wX+6a27rSrkqRksmsWYJR3nsg55u1DA==,
+            }
+        peerDependencies:
+            react: ^16.8.0 || ^17.0.0-rc.1
+            react-dom: ^16.8.0 || ^17.0.0-rc.1
+        dependencies:
+            '@babel/runtime': 7.17.8
+            '@react-aria/i18n': 3.3.8_react@17.0.2
+            '@react-aria/interactions': 3.8.3_react@17.0.2
+            '@react-aria/utils': 3.11.3_react@17.0.2
+            '@react-aria/visually-hidden': 3.2.7_react@17.0.2
+            '@react-stately/overlays': 3.1.6_react@17.0.2
+            '@react-types/button': 3.4.4_react@17.0.2
+            '@react-types/overlays': 3.5.4_react@17.0.2
+            '@react-types/shared': 3.11.2_react@17.0.2
+            dom-helpers: 3.4.0
+            react: 17.0.2
+            react-dom: 17.0.2_react@17.0.2
+        dev: false
+
     /@react-aria/ssr/3.1.2_react@17.0.2:
         resolution:
             {
@@ -4405,6 +4496,35 @@ packages:
             '@react-stately/utils': 3.4.1_react@17.0.2
             '@react-types/shared': 3.11.2_react@17.0.2
             clsx: 1.1.1
+            react: 17.0.2
+        dev: false
+
+    /@react-aria/visually-hidden/3.2.7_react@17.0.2:
+        resolution:
+            {
+                integrity: sha512-rvE0N91nBa7DxcH6KyapjttWQJFhRqeFBfGA9oCeGgTYLsn5CBvnKMLQEm2Z7ZlUcl08Xh2nB2KxKrRQ4ldYlw==,
+            }
+        peerDependencies:
+            react: ^16.8.0 || ^17.0.0-rc.1
+        dependencies:
+            '@babel/runtime': 7.17.8
+            '@react-aria/interactions': 3.8.3_react@17.0.2
+            '@react-aria/utils': 3.11.3_react@17.0.2
+            clsx: 1.1.1
+            react: 17.0.2
+        dev: false
+
+    /@react-stately/overlays/3.1.6_react@17.0.2:
+        resolution:
+            {
+                integrity: sha512-0iOdRqYjhTj8966lO9xN8+9IXXJ1Ngv2hCF2imPa40Jl1BXLBogLPblCq3HEQPcPsa+0pU3+xoaIb0MWdIkY9w==,
+            }
+        peerDependencies:
+            react: ^16.8.0 || ^17.0.0-rc.1
+        dependencies:
+            '@babel/runtime': 7.17.8
+            '@react-stately/utils': 3.4.1_react@17.0.2
+            '@react-types/overlays': 3.5.4_react@17.0.2
             react: 17.0.2
         dev: false
 
@@ -4468,6 +4588,18 @@ packages:
             react: ^16.8.0 || ^17.0.0-rc.1
         dependencies:
             '@react-aria/interactions': 3.8.2_react@17.0.2
+            '@react-types/shared': 3.11.2_react@17.0.2
+            react: 17.0.2
+        dev: false
+
+    /@react-types/overlays/3.5.4_react@17.0.2:
+        resolution:
+            {
+                integrity: sha512-lofEJS+ng9ydgHwztftTGIOaiuOni1zPTSZHmxPqlOrC+VQIdvdHUKF+3IOR1d6CbYA65a80oXO5sbMwij2Z/w==,
+            }
+        peerDependencies:
+            react: ^16.8.0 || ^17.0.0-rc.1
+        dependencies:
             '@react-types/shared': 3.11.2_react@17.0.2
             react: 17.0.2
         dev: false
@@ -5717,6 +5849,16 @@ packages:
             '@types/hoist-non-react-statics': 3.3.1
             '@types/react': 17.0.41
             csstype: 3.0.11
+        dev: true
+
+    /@types/styled-react-modal/1.2.2:
+        resolution:
+            {
+                integrity: sha512-Xiqdh6Wi0yegOK98rjO1Yrsy4bC+eMVkd6n2i23GSh8lgYCicZaMDYgX7vEil5LQuOBkfnyh+W6R+G0eIoTAbw==,
+            }
+        dependencies:
+            '@types/react': 17.0.41
+            '@types/styled-components': 5.1.24
         dev: true
 
     /@types/uuid/8.3.4:
@@ -8963,6 +9105,14 @@ packages:
             }
         dev: true
 
+    /deepmerge/2.2.1:
+        resolution:
+            {
+                integrity: sha512-R9hc1Xa/NOBi9WRVUWg19rl1UB7Tt4kuPd+thNJgFZoxXsTz7ncaPaeIm+40oSGuP33DfMb4sZt1QIGiJzC4EA==,
+            }
+        engines: { node: '>=0.10.0' }
+        dev: false
+
     /deepmerge/4.2.2:
         resolution:
             {
@@ -9163,6 +9313,15 @@ packages:
                 integrity: sha512-R305kwb5CcMDIpSHUnLyIAp7SrSPBx6F0VfQFB3M75xVMHhXJJIdePYgbPPh1o57vCHNu5QztokWUPsLjWzFqw==,
             }
         dev: true
+
+    /dom-helpers/3.4.0:
+        resolution:
+            {
+                integrity: sha512-LnuPJ+dwqKDIyotW1VzmOZ5TONUN7CwkCR5hrgawTUbkBGYdeoNLZo6nNfGkCrjtE1nXXaj7iMMpDa8/d9WoIA==,
+            }
+        dependencies:
+            '@babel/runtime': 7.17.8
+        dev: false
 
     /dom-serializer/1.3.2:
         resolution:
@@ -10823,6 +10982,24 @@ packages:
             hexoid: 1.0.0
             once: 1.4.0
             qs: 6.9.3
+        dev: false
+
+    /formik/2.2.9_react@17.0.2:
+        resolution:
+            {
+                integrity: sha512-LQLcISMmf1r5at4/gyJigGn0gOwFbeEAlji+N9InZF6LIMXnFNkO42sCI8Jt84YZggpD4cPWObAZaxpEFtSzNA==,
+            }
+        peerDependencies:
+            react: '>=16.8.0'
+        dependencies:
+            deepmerge: 2.2.1
+            hoist-non-react-statics: 3.3.2
+            lodash: 4.17.21
+            lodash-es: 4.17.21
+            react: 17.0.2
+            react-fast-compare: 2.0.4
+            tiny-warning: 1.0.3
+            tslib: 1.14.1
         dev: false
 
     /forwarded/0.2.0:
@@ -13708,6 +13885,13 @@ packages:
             p-locate: 5.0.0
         dev: true
 
+    /lodash-es/4.17.21:
+        resolution:
+            {
+                integrity: sha512-mKnC+QJ9pWVzv+C4/U3rRsHapFfHvQFoFB92e52xeyGMcX6/OlIl78je1u8vePzYZSkkogMPJ2yjxxsb89cxyw==,
+            }
+        dev: false
+
     /lodash.camelcase/4.3.0:
         resolution: { integrity: sha1-soqmKIorn8ZRA1x3EfZathkDMaY= }
         dev: true
@@ -16184,7 +16368,6 @@ packages:
             loose-envify: 1.4.0
             object-assign: 4.1.1
             react-is: 16.13.1
-        dev: true
 
     /proxy-addr/2.0.7:
         resolution:
@@ -16399,6 +16582,13 @@ packages:
             '@babel/runtime': 7.17.8
             react: 17.0.2
         dev: true
+
+    /react-fast-compare/2.0.4:
+        resolution:
+            {
+                integrity: sha512-suNP+J1VU1MWFKcyt7RtjiSWUjvidmQSlqu+eHslq+342xCbGTYmC0mEhPCOHxlW0CywylOC1u2DFAT+bv4dBw==,
+            }
+        dev: false
 
     /react-intl/5.24.7_react@17.0.2+typescript@4.6.2:
         resolution:
@@ -18031,6 +18221,22 @@ packages:
             react: 17.0.2
         dev: false
 
+    /styled-react-modal/3.0.0_7a082f7d10047d47195aea793f958a14:
+        resolution:
+            {
+                integrity: sha512-Wj5dx2RuibwWLX7aMEY0EzfY6e37w9oQbg7OG9vJskhsY8CqTL3wG3jdEddXxwf5Nj0m/k50JvCGjXugTXx4wQ==,
+            }
+        peerDependencies:
+            react: ^17.0.0 || ^16.9.0
+            react-dom: ^17.0.0 || ^16.9.0
+            styled-components: ^5.0.1
+        dependencies:
+            prop-types: 15.8.1
+            react: 17.0.2
+            react-dom: 17.0.2_react@17.0.2
+            styled-components: 5.3.3_281a4fa50a045c9112baf635f3bc27a7
+        dev: false
+
     /stylehacks/5.1.0_postcss@8.4.12:
         resolution:
             {
@@ -18348,6 +18554,13 @@ packages:
         engines: { node: '>=6' }
         dev: false
 
+    /tiny-warning/1.0.3:
+        resolution:
+            {
+                integrity: sha512-lBN9zLN/oAf68o3zNXYrdCt1kP8WsiGW8Oo2ka41b2IM5JL/S1CTyX1rW0mb/zSuJun0ZUrDxx4sqvYS2FWzPA==,
+            }
+        dev: false
+
     /tmp/0.0.33:
         resolution:
             {
@@ -18596,7 +18809,6 @@ packages:
             {
                 integrity: sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==,
             }
-        dev: true
 
     /tslib/2.3.1:
         resolution:
