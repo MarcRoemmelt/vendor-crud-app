@@ -36,7 +36,7 @@ async function bootstrap() {
     await app.register(fastifyCookie);
     await app.register(fastifyCsrf);
     await app.register(fastifyCors, {
-        origin: ['http://localhost:4200', 'https://vendor-crud-app-gnxnqav6z-marcroemmelt.vercel.app/'],
+        origin: ['http://localhost:4200', 'https://vendor-crud-app.vercel.app'],
         credentials: true,
     });
     await app.register(fastifyHelmet, {
