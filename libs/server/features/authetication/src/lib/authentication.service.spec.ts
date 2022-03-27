@@ -15,10 +15,11 @@ describe('AuthService', () => {
 
         const module: TestingModule = await Test.createTestingModule({
             imports: [
+                ConfigModule,
                 JwtModule.registerAsync({
                     imports: [ConfigModule],
                     useFactory: async (configService: ConfigService) => ({
-                        secret: configService.get<string>('JWT_SECRET'),
+                        secret: configService.get<string>('JWT_ACCESS_TOKEN_SECRET'),
                         signOptions: { expiresIn: '60s' },
                     }),
                     inject: [ConfigService],

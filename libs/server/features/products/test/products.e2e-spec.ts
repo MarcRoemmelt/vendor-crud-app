@@ -3,7 +3,11 @@ import { RouteGenericInterface } from 'fastify/types/route';
 import { Test } from '@nestjs/testing';
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 import { ThrottlerModule } from '@nestjs/throttler';
+import { getRepositoryToken } from '@nestjs/typeorm';
 
+import { User, usersMockRepository } from '@mr/server/features/users';
+
+import { productsMockRepository } from '../src/lib/products.mock-repository';
 import { ProductsModule } from '../src/lib/products.module';
 import { Product } from '../src/lib/entities/product.entity';
 
@@ -54,7 +58,12 @@ describe('Products', () => {
                     limit: 10,
                 }),
             ],
-        }).compile();
+        })
+            .overrideProvider(getRepositoryToken(Product))
+            .useValue(productsMockRepository)
+            .overrideProvider(getRepositoryToken(User))
+            .useValue(usersMockRepository)
+            .compile();
 
         app = moduleRef.createNestApplication<NestFastifyApplication>(new FastifyAdapter(fastifyInstance));
         await app.init();

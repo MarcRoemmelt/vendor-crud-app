@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Entity, Column, ObjectIdColumn } from 'typeorm';
 
 import { Role } from '@mr/server/features/authetication';
 
@@ -10,14 +11,20 @@ export type Coins = {
     100?: number;
 };
 
+@Entity({
+    name: 'users',
+})
 export class User {
     @ApiProperty()
+    @ObjectIdColumn()
     _id: string;
 
     @ApiProperty()
+    @Column()
     username: string;
 
     @ApiProperty({ enum: Role })
+    @Column()
     role: Role;
 
     @ApiProperty({
@@ -30,11 +37,14 @@ export class User {
             '100': { type: 'number' },
         },
     })
+    @Column()
     deposit: Coins;
 
     @ApiProperty()
+    @Column()
     password: string;
 
     @ApiProperty()
-    refreshToken?: string;
+    @Column()
+    refreshTokens: string[];
 }

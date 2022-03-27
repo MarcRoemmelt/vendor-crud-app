@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { getRepositoryToken } from '@nestjs/typeorm';
 
-import { UsersService } from '@mr/server/features/users';
+import { User, usersMockRepository, UsersService } from '@mr/server/features/users';
 
 import { ResetController } from './reset.controller';
 
@@ -10,7 +11,13 @@ describe('ResetController', () => {
     beforeEach(async () => {
         const module: TestingModule = await Test.createTestingModule({
             controllers: [ResetController],
-            providers: [UsersService],
+            providers: [
+                UsersService,
+                {
+                    provide: getRepositoryToken(User),
+                    useValue: usersMockRepository,
+                },
+            ],
         }).compile();
 
         controller = module.get<ResetController>(ResetController);

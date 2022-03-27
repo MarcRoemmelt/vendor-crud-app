@@ -1,6 +1,7 @@
+import * as bcrypt from 'bcrypt';
 import { HttpException, Injectable } from '@nestjs/common';
-import { hash, genSalt } from 'bcrypt';
-import { v4 as uuidv4 } from 'uuid';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -8,43 +9,66 @@ import { User } from './entities/user.entity';
 
 @Injectable()
 export class UsersService {
-    private users: User[] = [];
+    constructor(
+        @InjectRepository(User)
+        private readonly usersRepository: Repository<User>,
+    ) {}
 
-    async create({ username, password, role }: CreateUserDto) {
-        const salt = await genSalt();
-        const hashedPassword = await hash(password, salt);
-
-        if (this.findOne(username)) throw new HttpException('Username already registered', 409);
-
-        const user: User = {
-            _id: uuidv4(),
-            username,
-            password: hashedPassword,
-            deposit: {},
-            role,
+    async create(user: CreateUserDto) {
+        const newUser = {
+            deposit: {
+                5: 0,
+                10: 0,
+                20: 0,
+                50: 0,
+                100: 0,
+            },
+            refreshTokens: [],
+            ...user,
         };
-
-        return this.users.push(user);
+        return this.usersRepository.save(newUser);
     }
 
-    findAll() {
-        return this.users;
+    async findAll() {
+        return this.usersRepository.find();
     }
 
-    findOne(_userId: string) {
-        return this.users.find(({ _id }) => _id === _userId);
+    async findByUsername(username: string) {
+        return this.usersRepository.findOne({ username });
     }
 
-    update(_userId: string, updateUserDto: UpdateUserDto) {
-        const user = this.users.find(({ _id }) => _id === _userId);
-        return Object.assign(user, updateUserDto);
+    async findOne(_id: string) {
+        return this.usersRepository.findOne({ _id });
     }
 
-    remove(_userId: string) {
-        this.users = this.users.filter(({ _id }) => _id !== _userId);
+    async findOneIfRefreshTokenMatches(userId: string, token: string) {
+        const user = await this.findOne(userId);
+        const hasMatchingToken = await this.hasRefreshToken(token, user?.refreshTokens);
+        if (hasMatchingToken) return user;
+        return null;
     }
 
-    resetDeposit(_userId: string) {
-        return this.update(_userId, { deposit: {} });
+    private async hasRefreshToken(token: string, hashedTokens: string[] = []) {
+        for (const hashedToken of hashedTokens) {
+            if (await bcrypt.compare(token, hashedToken)) return true;
+        }
+        return false;
+    }
+
+    async update(userId: string, updateUserDto: UpdateUserDto) {
+        await this.usersRepository.update({ _id: userId }, updateUserDto);
+        const user = await this.findOne(userId);
+        if (!user) throw new HttpException('User not found', 404);
+        return user;
+    }
+
+    async remove(userId: string) {
+        const user = await this.findOne(userId);
+        await this.usersRepository.delete({ _id: userId });
+        return user;
+    }
+
+    async resetDeposit(userId: string) {
+        return this.update(userId, { deposit: {} });
     }
 }

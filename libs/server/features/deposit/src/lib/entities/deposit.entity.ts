@@ -86,10 +86,11 @@ export class Deposit {
         const solution = temp_solutions
             .pop()
             .sort((a, b) => a.length - b.length)
-            .shift()
-            .reduce((coins, value) => ({ ...coins, [value]: (coins[value] ?? 0) + 1 }), {} as Coins);
+            .shift();
 
-        return solution;
+        return solution
+            ? solution.reduce((coins, value) => ({ ...coins, [value]: (coins[value] ?? 0) + 1 }), {} as Coins)
+            : {};
     }
     /* esling-enable */
 }

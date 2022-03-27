@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { getRepositoryToken } from '@nestjs/typeorm';
 
-import { UsersService } from '@mr/server/features/users';
+import { User, usersMockRepository, UsersService } from '@mr/server/features/users';
 
 import { DepositController } from './deposit.controller';
 import { DepositService } from './deposit.service';
@@ -12,7 +13,14 @@ describe('DepositController', () => {
     beforeEach(async () => {
         const module: TestingModule = await Test.createTestingModule({
             controllers: [DepositController],
-            providers: [DepositService, UsersService],
+            providers: [
+                DepositService,
+                UsersService,
+                {
+                    provide: getRepositoryToken(User),
+                    useValue: usersMockRepository,
+                },
+            ],
         }).compile();
 
         controller = module.get<DepositController>(DepositController);
@@ -24,7 +32,6 @@ describe('DepositController', () => {
             const user = {
                 _id: 'id',
                 username: 'username',
-                password: 'passwordHash',
                 role: 'admin' as any,
                 deposit: {
                     5: 1,
@@ -36,8 +43,10 @@ describe('DepositController', () => {
                     _id: 'id',
                 },
             };
-            jest.spyOn(service, 'deposit').mockImplementation(() => Promise.resolve(user));
-            expect(await controller.deposit(request, {})).toBe(user);
+            jest.spyOn(service, 'deposit').mockImplementation(() =>
+                Promise.resolve({ ...user, password: 'passwordHash', refreshTokens: [] }),
+            );
+            expect(await controller.deposit(request, {})).toEqual(user);
         });
     });
 });

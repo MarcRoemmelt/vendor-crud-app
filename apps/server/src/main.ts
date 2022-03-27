@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { fastifyHelmet } from 'fastify-helmet';
 import fastifyCors from 'fastify-cors';
 import fastifyCookie from 'fastify-cookie';
@@ -34,7 +35,10 @@ async function bootstrap() {
     const globalPrefix = 'api';
     await app.register(fastifyCookie);
     await app.register(fastifyCsrf);
-    await app.register(fastifyCors);
+    await app.register(fastifyCors, {
+        origin: ['http://localhost:4200', 'https://vendor-crud-app.vercel.app/'],
+        credentials: true,
+    });
     await app.register(fastifyHelmet, {
         contentSecurityPolicy,
     });

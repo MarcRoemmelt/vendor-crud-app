@@ -1,11 +1,12 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { getRepositoryToken } from '@nestjs/typeorm';
 
-import { UsersService } from '@mr/server/features/users';
-import { ProductsService } from '@mr/server/features/products';
+import { User, usersMockRepository, UsersService } from '@mr/server/features/users';
+import { Product, productsMockRepository, ProductsService } from '@mr/server/features/products';
+import { DepositService } from '@mr/server/features/deposit';
 
 import { BuyController } from './buy.controller';
 import { BuyService } from './buy.service';
-import { DepositService } from '@mr/server/features/deposit';
 
 describe('DepositController', () => {
     let controller: BuyController;
@@ -14,7 +15,20 @@ describe('DepositController', () => {
     beforeEach(async () => {
         const module: TestingModule = await Test.createTestingModule({
             controllers: [BuyController],
-            providers: [BuyService, DepositService, ProductsService, UsersService],
+            providers: [
+                BuyService,
+                DepositService,
+                ProductsService,
+                UsersService,
+                {
+                    provide: getRepositoryToken(Product),
+                    useValue: productsMockRepository,
+                },
+                {
+                    provide: getRepositoryToken(User),
+                    useValue: usersMockRepository,
+                },
+            ],
         }).compile();
 
         controller = module.get<BuyController>(BuyController);
@@ -25,7 +39,7 @@ describe('DepositController', () => {
         it('should return the user ', async () => {
             const response = {
                 totalCost: 10,
-                change: [],
+                change: {},
                 purchasedProducts: [],
             };
             const request = {

@@ -1,16 +1,44 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { getRepositoryToken } from '@nestjs/typeorm';
 
+import { Product } from './entities/product.entity';
+import { productsMockRepository } from './products.mock-repository';
 import { ProductsService } from './products.service';
 
 describe('ProductsService', () => {
     let service: ProductsService;
+    let repo: typeof productsMockRepository;
+    const testProducts = [
+        {
+            _id: 'productId1',
+            sellerId: 'id',
+            productName: 'name',
+            amountAvailable: 22,
+            cost: 10,
+        },
+        {
+            _id: 'productId2',
+            sellerId: 'id',
+            productName: 'name',
+            amountAvailable: 22,
+            cost: 10,
+        },
+    ];
 
     beforeEach(async () => {
         const module: TestingModule = await Test.createTestingModule({
-            providers: [ProductsService],
+            providers: [
+                ProductsService,
+                {
+                    provide: getRepositoryToken(Product),
+                    useValue: productsMockRepository,
+                },
+            ],
         }).compile();
 
         service = module.get<ProductsService>(ProductsService);
+        repo = module.get<typeof productsMockRepository>(getRepositoryToken(Product));
+        repo.products = [...testProducts];
     });
 
     describe('create', () => {
@@ -32,64 +60,20 @@ describe('ProductsService', () => {
 
     describe('findAll', () => {
         it('should return an array of all products ', async () => {
-            const products = [
-                {
-                    _id: 'productId',
-                    sellerId: 'id',
-                    productName: 'name',
-                    amountAvailable: 22,
-                    cost: 10,
-                },
-            ];
-            service['products'] = products;
-            expect(await service.findAll()).toEqual(products);
+            expect(await service.findAll()).toEqual(testProducts);
         });
     });
 
     describe('findOne', () => {
         it('should return the product ', async () => {
-            const products = [
-                {
-                    _id: 'productId',
-                    sellerId: 'id',
-                    productName: 'name',
-                    amountAvailable: 22,
-                    cost: 10,
-                },
-                {
-                    _id: 'productId2',
-                    sellerId: 'id',
-                    productName: 'name',
-                    amountAvailable: 22,
-                    cost: 10,
-                },
-            ];
-            service['products'] = products;
-            expect(await service.findOne('productId2')).toEqual(products[1]);
+            expect(await service.findOne('productId2')).toEqual(testProducts[1]);
         });
     });
 
     describe('update', () => {
         it('should return the updated product ', async () => {
-            const products = [
-                {
-                    _id: 'productId',
-                    sellerId: 'id',
-                    productName: 'name',
-                    amountAvailable: 22,
-                    cost: 10,
-                },
-                {
-                    _id: 'productId2',
-                    sellerId: 'id',
-                    productName: 'name',
-                    amountAvailable: 22,
-                    cost: 10,
-                },
-            ];
-            service['products'] = products;
-            expect(await service.update('productId', { productName: 'newName' })).toEqual({
-                ...products[0],
+            expect(await service.update('productId1', { productName: 'newName' })).toEqual({
+                ...testProducts[0],
                 productName: 'newName',
             });
         });
@@ -97,24 +81,8 @@ describe('ProductsService', () => {
 
     describe('remove', () => {
         it('should return the removed product', async () => {
-            const product1 = {
-                _id: 'productId',
-                sellerId: 'id',
-                productName: 'name',
-                amountAvailable: 22,
-                cost: 10,
-            };
-            const product2 = {
-                _id: 'productId2',
-                sellerId: 'id',
-                productName: 'name',
-                amountAvailable: 22,
-                cost: 10,
-            };
-            const products = [product1, product2];
-            service['products'] = products;
-            expect(await service.remove(product1._id)).toEqual(product1);
-            expect(service['products']).toEqual([product2]);
+            expect(await service.remove(testProducts[0]._id)).toEqual(testProducts[0]);
+            expect(await service.findAll()).toEqual([testProducts[1]]);
         });
     });
 });

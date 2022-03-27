@@ -1,8 +1,12 @@
+import fastify, { FastifyRequest, RawServerDefault } from 'fastify';
 import { Test } from '@nestjs/testing';
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
+import { getRepositoryToken } from '@nestjs/typeorm';
 import { ThrottlerModule } from '@nestjs/throttler';
 
-import fastify, { FastifyRequest, RawServerDefault } from 'fastify';
+import { Product, productsMockRepository, ProductsModule } from '@mr/server/features/products';
+import { User, usersMockRepository, UsersModule } from '@mr/server/features/users';
+
 import { RouteGenericInterface } from 'fastify/types/route';
 import { BuyService } from '../buy.service';
 import { BuyModule } from '../buy.module';
@@ -36,6 +40,8 @@ describe('Buy', () => {
 
         const moduleRef = await Test.createTestingModule({
             imports: [
+                UsersModule,
+                ProductsModule,
                 BuyModule,
                 ThrottlerModule.forRoot({
                     ttl: 60,
@@ -43,6 +49,10 @@ describe('Buy', () => {
                 }),
             ],
         })
+            .overrideProvider(getRepositoryToken(Product))
+            .useValue(productsMockRepository)
+            .overrideProvider(getRepositoryToken(User))
+            .useValue(usersMockRepository)
             .overrideProvider(BuyService)
             .useValue(buyService)
             .compile();

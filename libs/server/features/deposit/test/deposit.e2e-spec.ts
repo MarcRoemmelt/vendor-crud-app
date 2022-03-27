@@ -1,11 +1,14 @@
 import fastify, { FastifyRequest, RawServerDefault } from 'fastify';
+import { RouteGenericInterface } from 'fastify/types/route';
 import { Test } from '@nestjs/testing';
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 import { ThrottlerModule } from '@nestjs/throttler';
+import { getRepositoryToken } from '@nestjs/typeorm';
+
+import { User, UsersModule, usersMockRepository } from '@mr/server/features/users';
 
 import { DepositModule } from '../src/lib/deposit.module';
 import { DepositService } from '../src/lib/deposit.service';
-import { RouteGenericInterface } from 'fastify/types/route';
 
 describe('Deposit', () => {
     let app: NestFastifyApplication;
@@ -36,6 +39,7 @@ describe('Deposit', () => {
 
         const moduleRef = await Test.createTestingModule({
             imports: [
+                UsersModule,
                 DepositModule,
                 ThrottlerModule.forRoot({
                     ttl: 60,
@@ -43,6 +47,8 @@ describe('Deposit', () => {
                 }),
             ],
         })
+            .overrideProvider(getRepositoryToken(User))
+            .useValue(usersMockRepository)
             .overrideProvider(DepositService)
             .useValue(depositService)
             .compile();

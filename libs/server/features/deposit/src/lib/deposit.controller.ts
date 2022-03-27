@@ -1,10 +1,10 @@
 import { Body, Controller, HttpCode, Post, Req } from '@nestjs/common';
 
 import { Roles, Role, CheckPolicies } from '@mr/server/features/authetication';
-import { UpdateUserPolicy } from '@mr/server/features/users';
 
 import { DepositService } from './deposit.service';
 import { DepositDto } from './dto/deposit.dto';
+import { DepositPolicy } from './deposit.policy';
 
 @Controller('deposit')
 export class DepositController {
@@ -13,9 +13,11 @@ export class DepositController {
     @Post()
     @HttpCode(200)
     @Roles(Role.Buyer)
-    @CheckPolicies(UpdateUserPolicy)
+    @CheckPolicies(DepositPolicy)
     async deposit(@Req() req, @Body() depositDto: DepositDto) {
         const userId = req.user._id;
-        return this.depositService.deposit(depositDto, userId);
+        const user = await this.depositService.deposit(depositDto, userId);
+        const { refreshTokens: _r, password: _p, ...publicUser } = user;
+        return publicUser;
     }
 }

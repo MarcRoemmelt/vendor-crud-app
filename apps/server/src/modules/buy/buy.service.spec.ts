@@ -1,9 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { getRepositoryToken } from '@nestjs/typeorm';
 
-import { UsersService } from '@mr/server/features/users';
+import { User, usersMockRepository, UsersService } from '@mr/server/features/users';
 
 import { BuyService } from './buy.service';
-import { ProductsService } from '@mr/server/features/products';
+import { Product, productsMockRepository, ProductsService } from '@mr/server/features/products';
 import { DepositService } from '@mr/server/features/deposit';
 
 describe('DepositService', () => {
@@ -14,7 +15,20 @@ describe('DepositService', () => {
 
     beforeEach(async () => {
         const module: TestingModule = await Test.createTestingModule({
-            providers: [BuyService, DepositService, ProductsService, UsersService],
+            providers: [
+                BuyService,
+                DepositService,
+                ProductsService,
+                UsersService,
+                {
+                    provide: getRepositoryToken(Product),
+                    useValue: productsMockRepository,
+                },
+                {
+                    provide: getRepositoryToken(User),
+                    useValue: usersMockRepository,
+                },
+            ],
         }).compile();
 
         buyService = module.get<BuyService>(BuyService);
@@ -34,6 +48,7 @@ describe('DepositService', () => {
                     5: 0,
                     10: 10,
                 },
+                refreshTokens: [],
             };
             const dummyProduct = {
                 _id: 'id',
@@ -44,16 +59,13 @@ describe('DepositService', () => {
             };
             jest.spyOn(productsService, 'findOne').mockImplementation(() => Promise.resolve(dummyProduct));
             jest.spyOn(productsService, 'update').mockImplementation(() => Promise.resolve(dummyProduct));
-            jest.spyOn(usersService, 'findOne').mockImplementation(() => dummyUser);
+            jest.spyOn(usersService, 'findOne').mockImplementation(() => Promise.resolve(dummyUser));
             jest.spyOn(usersService, 'update').mockImplementation((userId, updates) =>
-                Object.assign({}, dummyUser, updates),
+                Promise.resolve(Object.assign({}, dummyUser, updates)),
             );
             expect(await buyService.buy({ amount: 2, productId: '1' }, dummyUser._id)).toEqual({
                 totalCost: 2 * 20,
-                change: depositService
-                    .createDeposit(dummyUser.deposit)
-                    .subtract(2 * 20)
-                    .toArray(),
+                change: depositService.createDeposit(dummyUser.deposit).subtract(2 * 20).coins,
                 purchasedProducts: [dummyProduct, dummyProduct],
             });
         });
@@ -64,6 +76,7 @@ describe('DepositService', () => {
                 username: 'username',
                 role: 'buyer' as any,
                 password: 'passwordHash',
+                refreshTokens: [],
                 deposit: {
                     5: 0,
                     10: 0,
@@ -78,9 +91,9 @@ describe('DepositService', () => {
             };
             jest.spyOn(productsService, 'findOne').mockImplementation(() => Promise.resolve(dummyProduct));
             jest.spyOn(productsService, 'update').mockImplementation(() => Promise.resolve(dummyProduct));
-            jest.spyOn(usersService, 'findOne').mockImplementation(() => dummyUser);
+            jest.spyOn(usersService, 'findOne').mockImplementation(() => Promise.resolve(dummyUser));
             jest.spyOn(usersService, 'update').mockImplementation((userId, updates) =>
-                Object.assign({}, dummyUser, updates),
+                Promise.resolve(Object.assign({}, dummyUser, updates)),
             );
             await expect(buyService.buy({ amount: 2, productId: '1' }, dummyUser._id)).rejects.toEqual(
                 new Error('Insufficient deposit.'),
@@ -93,6 +106,7 @@ describe('DepositService', () => {
                 username: 'username',
                 role: 'buyer' as any,
                 password: 'passwordHash',
+                refreshTokens: [],
                 deposit: {
                     5: 0,
                     10: 10,
@@ -107,9 +121,9 @@ describe('DepositService', () => {
             };
             jest.spyOn(productsService, 'findOne').mockImplementation(() => Promise.resolve(dummyProduct));
             jest.spyOn(productsService, 'update').mockImplementation(() => Promise.resolve(dummyProduct));
-            jest.spyOn(usersService, 'findOne').mockImplementation(() => dummyUser);
+            jest.spyOn(usersService, 'findOne').mockImplementation(() => Promise.resolve(dummyUser));
             jest.spyOn(usersService, 'update').mockImplementation((userId, updates) =>
-                Object.assign({}, dummyUser, updates),
+                Promise.resolve(Object.assign({}, dummyUser, updates)),
             );
             await expect(buyService.buy({ amount: 2, productId: '1' }, dummyUser._id)).rejects.toEqual(
                 new Error('Amount too high.'),

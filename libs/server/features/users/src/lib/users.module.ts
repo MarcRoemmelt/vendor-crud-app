@@ -1,21 +1,15 @@
-import { APP_GUARD } from '@nestjs/core';
-import { ThrottlerGuard } from '@nestjs/throttler';
 import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { UsersService } from './users.service';
 import { UsersController } from './users.controller';
 import { UpdateUserPolicy } from './update-user.policy';
+import { User } from './entities/user.entity';
 
 @Module({
+    imports: [TypeOrmModule.forFeature([User])],
     controllers: [UsersController],
-    providers: [
-        UsersService,
-        UpdateUserPolicy,
-        {
-            provide: APP_GUARD,
-            useClass: ThrottlerGuard,
-        },
-    ],
-    exports: [UsersService, UpdateUserPolicy],
+    providers: [UsersService, UpdateUserPolicy],
+    exports: [UsersService, UpdateUserPolicy, TypeOrmModule],
 })
 export class UsersModule {}

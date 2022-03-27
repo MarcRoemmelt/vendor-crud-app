@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { getRepositoryToken } from '@nestjs/typeorm';
 
-import { UsersService } from '@mr/server/features/users';
+import { User, usersMockRepository, UsersService } from '@mr/server/features/users';
 
 import { DepositService } from './deposit.service';
 
@@ -10,7 +11,14 @@ describe('DepositService', () => {
 
     beforeEach(async () => {
         const module: TestingModule = await Test.createTestingModule({
-            providers: [DepositService, UsersService],
+            providers: [
+                DepositService,
+                UsersService,
+                {
+                    provide: getRepositoryToken(User),
+                    useValue: usersMockRepository,
+                },
+            ],
         }).compile();
 
         depositService = module.get<DepositService>(DepositService);
@@ -24,14 +32,15 @@ describe('DepositService', () => {
                 username: 'username',
                 role: 'buyer' as any,
                 password: 'passwordHash',
+                refreshTokens: [],
                 deposit: {
                     5: 0,
                     10: 10,
                 },
             };
-            jest.spyOn(usersService, 'findOne').mockImplementation(() => dummyUser);
+            jest.spyOn(usersService, 'findOne').mockImplementation(() => Promise.resolve(dummyUser));
             jest.spyOn(usersService, 'update').mockImplementation((userId, updates) =>
-                Object.assign({}, dummyUser, updates),
+                Promise.resolve(Object.assign({}, dummyUser, updates)),
             );
             expect(await depositService.deposit({ 5: 10, 10: 0, 50: 20 }, dummyUser._id)).toEqual({
                 ...dummyUser,

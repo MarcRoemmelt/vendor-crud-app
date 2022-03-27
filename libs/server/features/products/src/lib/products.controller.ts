@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Req } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Req, Query } from '@nestjs/common';
 
 import { CheckPolicies } from '@mr/server/features/authetication';
 
@@ -18,8 +18,8 @@ export class ProductsController {
     }
 
     @Get()
-    findAll() {
-        return this.productsService.findAll();
+    findAll(@Query('sellerId') sellerId?: string) {
+        return this.productsService.findAll(sellerId);
     }
 
     @Get(':productid')

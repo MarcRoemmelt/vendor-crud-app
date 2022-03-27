@@ -1,7 +1,9 @@
-import { Module } from '@nestjs/common';
-import { APP_GUARD } from '@nestjs/core';
-import { ConfigModule } from '@nestjs/config';
+import { Module, ValidationPipe } from '@nestjs/common';
+import { APP_GUARD, APP_PIPE } from '@nestjs/core';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
+import * as Joi from 'joi';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { AuthenticationModule, JwtAuthGuard, PoliciesGuard, RolesGuard } from '@mr/server/features/authetication';
 import { CaslModule } from '@mr/server/features/casl';
@@ -14,8 +16,27 @@ import { ResetModule } from '../modules/reset/reset.module';
 import { BuyModule } from '../modules/buy/buy.module';
 @Module({
     imports: [
+        TypeOrmModule.forRootAsync({
+            imports: [ConfigModule],
+            useFactory: (configService: ConfigService) => {
+                const username = configService.get('MONGODB_USER');
+                const password = configService.get('MONGODB_PASSWORD');
+                const host = configService.get('MONGODB_HOST');
+                const isProd = configService.get('NODE_ENV') === 'production';
+                const url = `mongodb${
+                    isProd ? '+srv' : ''
+                }://${username}:${password}@${host}/mvp-factory-vendor-app?retryWrites=true&w=majority`;
+                return {
+                    type: 'mongodb',
+                    url,
+                    autoLoadEntities: true,
+                };
+            },
+            inject: [ConfigService],
+        }),
         AuthenticationModule.register({
             UsersService,
+            UsersModule,
         }),
         BuyModule,
         CaslModule.register({
@@ -23,18 +44,32 @@ import { BuyModule } from '../modules/buy/buy.module';
         }),
         ConfigModule.forRoot({
             isGlobal: true,
+            validationSchema: Joi.object({
+                JWT_ACCESS_TOKEN_SECRET: Joi.string().required(),
+                JWT_ACCESS_TOKEN_EXPIRES_IN: Joi.string().required(),
+                JWT_REFRESH_TOKEN_SECRET: Joi.string().required(),
+                JWT_REFRESH_TOKEN_EXPIRES_IN: Joi.string().required(),
+            }),
         }),
         DepositModule,
         ProductsModule,
         ResetModule,
         ThrottlerModule.forRoot({
-            ttl: 60,
-            limit: 10,
+            ttl: 10,
+            limit: 20,
         }),
         UsersModule,
     ],
     controllers: [AppController],
     providers: [
+        {
+            provide: APP_GUARD,
+            useClass: ThrottlerGuard,
+        },
+        {
+            provide: APP_GUARD,
+            useClass: JwtAuthGuard,
+        },
         {
             provide: APP_GUARD,
             useClass: RolesGuard,
@@ -44,12 +79,8 @@ import { BuyModule } from '../modules/buy/buy.module';
             useClass: PoliciesGuard,
         },
         {
-            provide: APP_GUARD,
-            useClass: JwtAuthGuard,
-        },
-        {
-            provide: APP_GUARD,
-            useClass: ThrottlerGuard,
+            provide: APP_PIPE,
+            useClass: ValidationPipe,
         },
     ],
 })

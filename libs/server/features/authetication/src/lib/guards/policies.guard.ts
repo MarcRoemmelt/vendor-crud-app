@@ -2,9 +2,8 @@ import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { ModuleRef, Reflector } from '@nestjs/core';
 
 import { isClass } from '@mr/shared/utility/helper-functions';
-import { AppAbility, CaslAbilityFactory } from '@mr/server/features/casl';
+import { AppAbility, CaslAbilityFactory, PolicyHandler } from '@mr/server/features/casl';
 import { CHECK_POLICIES_KEY } from '../policies.decorator';
-import { PolicyHandler } from '../authentication.types';
 
 @Injectable()
 export class PoliciesGuard implements CanActivate {
@@ -19,7 +18,6 @@ export class PoliciesGuard implements CanActivate {
 
         const { user } = context.switchToHttp().getRequest();
         const ability = this.caslAbilityFactory.createForUser(user);
-
         const policyResults = policyHandlers.map((handler) => this.execPolicyHandler(handler, ability, context));
         return (await Promise.all(policyResults)).every(Boolean);
     }

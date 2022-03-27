@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 
 import { DepositService } from '@mr/server/features/deposit';
 import { ProductsService, Product } from '@mr/server/features/products';
@@ -19,13 +19,15 @@ export class BuyService {
         const product = await this.productsService.findOne(productId);
         const buyer = await this.usersService.findOne(userId);
         const seller = await this.usersService.findOne(product.sellerId);
-        if (amount > product.amountAvailable) throw new Error('Amount too high.');
+        if (amount > product.amountAvailable)
+            throw new HttpException({ message: 'Amount too high.', code: 'invalid-amount' }, 400);
 
         const totalPrice = product.cost * amount;
         const deposit = await this.depositService.createDeposit(buyer.deposit);
         const totalBalance = deposit.balance;
 
-        if (totalPrice > totalBalance) throw new Error('Insufficient deposit.');
+        if (totalPrice > totalBalance)
+            throw new HttpException({ message: 'Insufficient deposit.', code: 'insufficient-deposit' }, 400);
 
         const newDeposit = deposit.subtract(totalPrice);
         await this.usersService.update(userId, { deposit: newDeposit.coins });
@@ -36,7 +38,7 @@ export class BuyService {
 
         return {
             totalCost: totalPrice,
-            change: newDeposit.toArray(),
+            change: newDeposit.coins,
             purchasedProducts: this.getPurchasedProducts(product, amount),
         };
     }
