@@ -142,8 +142,8 @@
     "main": "",
     "private": true,
     "scripts": {
-        "build": "nx build",
-        "start": "nx serve",
+        "build": "nx build api --prod",
+        "start": "node dist/apps/api/main.js",
         "test": "nx test"
     }
 }
