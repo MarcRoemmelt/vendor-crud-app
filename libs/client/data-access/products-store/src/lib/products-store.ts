@@ -41,7 +41,7 @@ export function createProductsStore({ api, userStore }: ProductsStoreOptions) {
             set(this._products, products);
         },
         async createProduct(product: INewProductFormValues) {
-            const { success, data: newProduct, error } = await api.create(product);
+            const { success, data: newProduct, error } = await api.create<IProduct>(product);
             if (success) {
                 this.setProduct(newProduct);
                 return newProduct;
@@ -49,9 +49,10 @@ export function createProductsStore({ api, userStore }: ProductsStoreOptions) {
             if (error) {
                 toast(error.message);
             }
+            return null;
         },
         async fetchProducts() {
-            const { success, data: products, error } = await api.all();
+            const { success, data: products, error } = await api.all<IProduct[]>();
             if (success) {
                 this.setProducts(products);
                 return products;
@@ -59,9 +60,10 @@ export function createProductsStore({ api, userStore }: ProductsStoreOptions) {
             if (error) {
                 toast(error.message);
             }
+            return [];
         },
         async fetchBySellerId(sellerId: string) {
-            const { success, data: products, error } = await api.bySellerId(sellerId);
+            const { success, data: products, error } = await api.bySellerId<IProduct[]>(sellerId);
             if (success) {
                 this.setProducts(products);
                 return products;
@@ -69,9 +71,10 @@ export function createProductsStore({ api, userStore }: ProductsStoreOptions) {
             if (error) {
                 toast(error.message);
             }
+            return null;
         },
         async updateProduct(productId: string, product: IUpdateProductFormValues) {
-            const { success, data: updatedProduct, error } = await api.update(productId, product);
+            const { success, data: updatedProduct, error } = await api.update<IProduct>(productId, product);
             if (success) {
                 this.setProduct(updatedProduct);
                 return updatedProduct;
@@ -79,6 +82,7 @@ export function createProductsStore({ api, userStore }: ProductsStoreOptions) {
             if (error) {
                 toast(error.message);
             }
+            return null;
         },
         async deleteProduct(productId: string) {
             const { success, error } = await api.del(productId);

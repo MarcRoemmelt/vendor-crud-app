@@ -11,11 +11,14 @@ interface IUpdateProductDto {
     cost?: number;
 }
 export const createProductsApi = (requests: Requests) => ({
-    all: () => requests.get('/products'),
-    bySellerId: (sellerId: string) => requests.get(`/products${sellerId ? `?sellerId=${sellerId}` : ''}`),
-    byId: (productId: string) => requests.get(`/products/${productId}`),
-    update: (productId: string, updates: IUpdateProductDto) => requests.patch(`/products/${productId}`, updates),
-    del: (productId: string) => requests.del(`/products/${productId}`),
-    create: (product: ICreateProductDto) => requests.post('/products', product),
-    buy: (payload: { productId: string; amount: number }) => requests.post('/buy', payload),
+    all: <R>() => requests.get<R>('/products'),
+    bySellerId: <R>(sellerId: string) => requests.get<R>(`/products${sellerId ? `?sellerId=${sellerId}` : ''}`),
+    byId: <R>(productId: string) => requests.get<R>(`/products/${productId}`),
+    update: <R, B extends IUpdateProductDto = IUpdateProductDto>(productId: string, updates: B) =>
+        requests.patch<R, B>(`/products/${productId}`, updates),
+    del: <R>(productId: string) => requests.del<R>(`/products/${productId}`),
+    create: <R, B extends ICreateProductDto = ICreateProductDto>(product: B) =>
+        requests.post<R, B>('/products', product),
+    buy: <R, B extends { productId: string; amount: number } = { productId: string; amount: number }>(payload: B) =>
+        requests.post<R, B>('/buy', payload),
 });

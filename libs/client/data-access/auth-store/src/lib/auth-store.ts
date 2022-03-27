@@ -31,7 +31,11 @@ export function createAuthStore({ api }: AuthStoreOptions) {
         /* We use the values passed to this function instead of the saved values
          * The saved values are only for prepopulation of formfields in the UI */
         async register({ username, password, role }: IRegisterFormValues) {
-            const { success, data, error } = await api.register(username, password, role);
+            const { success, data, error } = await api.register<{
+                user: any;
+                access_token: string;
+                refresh_token: string;
+            }>(username, password, role);
             if (success) {
                 const { user, access_token, refresh_token } = data;
                 localStorage.setItem('access_token', access_token);
@@ -44,7 +48,12 @@ export function createAuthStore({ api }: AuthStoreOptions) {
             }
         },
         async login({ username, password }: ILoginFormValues) {
-            const { success, data, error } = await api.login(username, password);
+            const { success, data, error } = await api.login<{
+                user: any;
+                existingSessions: number;
+                access_token: string;
+                refresh_token: string;
+            }>(username, password);
             if (success) {
                 const { user, existingSessions, access_token, refresh_token } = data;
                 localStorage.setItem('access_token', access_token);
@@ -64,7 +73,7 @@ export function createAuthStore({ api }: AuthStoreOptions) {
             localStorage.removeItem('refresh_token');
         },
         async logoutAll() {
-            const { success, data, error } = await api.logoutAll();
+            const { success, data, error } = await api.logoutAll<{ refresh_token: string }>();
             if (success) {
                 const { refresh_token } = data;
                 localStorage.setItem('refresh_token', refresh_token);
@@ -74,7 +83,7 @@ export function createAuthStore({ api }: AuthStoreOptions) {
             }
         },
         async refreshSession() {
-            const { success, data } = await api.refresh();
+            const { success, data } = await api.refresh<{ _id: string }>();
             if (success) {
                 this.setIsAuthenticated(true);
                 this.setCurrentUser(data._id);

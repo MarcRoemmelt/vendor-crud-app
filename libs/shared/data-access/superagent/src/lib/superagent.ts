@@ -1,7 +1,7 @@
 import superagent, { Response, SuperAgentRequest } from 'superagent';
 
 type RequestMethod = 'get' | 'del' | 'post' | 'put';
-type Res =
+type Res<R = any> =
     | {
           success: false;
           error?: any;
@@ -9,7 +9,7 @@ type Res =
       }
     | {
           success: true;
-          data: any;
+          data: R;
           error?: never;
       };
 
@@ -75,7 +75,13 @@ export interface ISuperAgentOptions {
     getAccessToken?: () => string | null;
     getRefreshToken?: () => string | null;
 }
-export type Requests = ReturnType<typeof configureSuperAgent>;
+export type Requests = {
+    del<R>(url: string): Promise<Res<R>>;
+    get<R>(url: string): Promise<Res<R>>;
+    put<R, B extends Record<string | number | symbol, any>>(url: string, body?: B): Promise<Res<R>>;
+    patch<R, B extends Record<string | number | symbol, any>>(url: string, body?: B): Promise<Res<R>>;
+    post<R, B extends Record<string | number | symbol, any> | void = void>(url: string, body?: B): Promise<Res<R>>;
+};
 
 // eslint-disable-next-line max-lines-per-function
 export const configureSuperAgent = ({
@@ -83,28 +89,28 @@ export const configureSuperAgent = ({
     SESSION_ENDPOINT = '/session',
     getAccessToken = () => localStorage.getItem('access_token'),
     getRefreshToken = () => localStorage.getItem('refresh_token'),
-}: ISuperAgentOptions) => {
+}: ISuperAgentOptions): Requests => {
     const handleErrors = createHandleErrors({ API_ROOT, SESSION_ENDPOINT, getRefreshToken });
     return {
-        del: (url: string) =>
+        del: (url) =>
             superagent.del(`${API_ROOT}${url}`).use(tokenPlugin(getAccessToken)).then(responseBody).catch(handleErrors),
-        get: (url: string) =>
+        get: (url) =>
             superagent.get(`${API_ROOT}${url}`).use(tokenPlugin(getAccessToken)).then(responseBody).catch(handleErrors),
-        put: (url: string, body: Record<string | number | symbol, any>) =>
+        put: (url, body) =>
             superagent
                 .put(`${API_ROOT}${url}`)
                 .use(tokenPlugin(getAccessToken))
                 .send(body)
                 .then(responseBody)
                 .catch(handleErrors),
-        patch: (url: string, body: Record<string | number | symbol, any>) =>
+        patch: (url, body = {} as any) =>
             superagent
                 .patch(`${API_ROOT}${url}`)
                 .use(tokenPlugin(getAccessToken))
                 .send(body)
                 .then(responseBody)
                 .catch(handleErrors),
-        post: (url: string, body: Record<string | number | symbol, any> = {}) =>
+        post: (url, body = {} as any) =>
             superagent
                 .post(`${API_ROOT}${url}`)
                 .use(tokenPlugin(getAccessToken))
