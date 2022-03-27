@@ -1,3 +1,3 @@
 export const config = {
-    apiRoot: process.env.API_ROOT,
+    apiRoot: process.env.NEXT_PUBLIC_API_ROOT,
 };
