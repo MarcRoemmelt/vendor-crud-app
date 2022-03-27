@@ -20,7 +20,7 @@
                         ]
                     }
                 ],
-                "max-lines-per-function": ["error", 20],
+                "max-lines-per-function": ["error", 30],
                 "prettier/prettier": [
                     "error",
                     {

@@ -1,7 +1,7 @@
 
 # Name of the app to check. Change this to your application name!
 
-APP=indie-creators
+APP=client
 
 
 # Determine version of Nx installed
