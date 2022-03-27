@@ -1,5 +1,6 @@
+import { observer } from 'mobx-react-lite';
 import { Formik, Field } from 'formik';
-import { ChangeEvent, useCallback } from 'react';
+import { useCallback } from 'react';
 import { FormattedMessage } from 'react-intl';
 import styled from 'styled-components';
 
@@ -7,22 +8,24 @@ import { IRegisterFormValues } from '@mr/client/data-access/auth-store';
 import { IcButton } from '@mr/client/ui/ic-button';
 import { Role } from '@mr/client/data-access/user-api';
 import { StyledFieldset, StyledForm } from '@mr/shared/ui/form';
+import { ModalComponentProps } from '@mr/shared/ui/use-modal';
 
 import { useAuthStore } from '../AuthProvider';
+import { LoginForm } from '../LoginForm/LoginForm';
 
-interface IRegisterFormProps {
+interface IRegisterFormProps extends ModalComponentProps {
     role: Role;
-    goToLogin: () => void;
 }
 type FormValues = Omit<IRegisterFormValues, 'role'>;
 const initialValues = { username: '', password: '' };
 
-export function RegisterForm({ goToLogin, role }: IRegisterFormProps) {
+export const RegisterForm = observer(({ role }: IRegisterFormProps) => {
     const authStore = useAuthStore();
 
     const onSubmit = useCallback(
-        (values: FormValues) => {
-            authStore.register({ ...values, role });
+        async (values: FormValues) => {
+            await authStore.register({ ...values, role });
+            authStore.setActiveModal();
         },
         [authStore, role],
     );
@@ -32,53 +35,33 @@ export function RegisterForm({ goToLogin, role }: IRegisterFormProps) {
             <StyledForm>
                 <UsernameInput />
                 <PasswordInput />
-                <FormActions goToLogin={goToLogin} />
+                <FormActions />
             </StyledForm>
         </Formik>
     );
-}
+});
 
-function UsernameInput() {
-    const authStore = useAuthStore();
-    const handleUsernameChange = (e: ChangeEvent<HTMLInputElement>) => authStore.setUsername(e.target.value);
-
+const UsernameInput = observer(() => {
     return (
         <StyledFieldset>
             <label htmlFor="username">
                 <FormattedMessage id="auth.register.form.labels.username" defaultMessage="Username" />
             </label>
-            <Field
-                id="username"
-                name="username"
-                autocomplete="username"
-                placeholder="@MisterBanana"
-                value={authStore.values.username}
-                onChange={handleUsernameChange}
-            />
+            <Field id="username" name="username" autoComplete="username" placeholder="@MisterBanana" />
         </StyledFieldset>
     );
-}
+});
 
-function PasswordInput() {
-    const authStore = useAuthStore();
-    const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>) => authStore.setPassword(e.target.value);
-
+const PasswordInput = observer(() => {
     return (
         <StyledFieldset>
             <label htmlFor="password">
                 <FormattedMessage id="auth.register.form.labels.password" defaultMessage="Password" />
             </label>
-            <Field
-                id="password"
-                name="password"
-                autocomplete="password"
-                placeholder="abXen2/3nw"
-                value={authStore.values.password}
-                onChange={handlePasswordChange}
-            />
+            <Field id="password" name="password" autoComplete="password" placeholder="abXen2/3nw" />
         </StyledFieldset>
     );
-}
+});
 
 const StyledFormActions = styled.div`
     display: flex;
@@ -86,13 +69,14 @@ const StyledFormActions = styled.div`
     margin-top: 20px;
 `;
 
-interface IFormActionsProps {
-    goToLogin: () => void;
-}
-function FormActions({ goToLogin }: IFormActionsProps) {
+function FormActions() {
+    const store = useAuthStore();
+    const showLogin = () => {
+        store.setActiveModal(LoginForm.key);
+    };
     return (
         <StyledFormActions>
-            <IcButton secondary onClick={goToLogin}>
+            <IcButton secondary onPress={showLogin}>
                 <FormattedMessage id="auth.register.form.cancel-button" defaultMessage="Already registered?" />
             </IcButton>
             <IcButton primary type="submit">

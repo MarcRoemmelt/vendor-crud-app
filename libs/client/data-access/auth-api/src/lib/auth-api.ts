@@ -6,5 +6,5 @@ export const createAuthApi = (requests: Requests) => ({
     register: (username: string, password: string, role: Role) => requests.post('/users', { username, password, role }),
     logout: () => requests.post('/logout'),
     logoutAll: () => requests.post('/logout/all'),
-    session: () => requests.post('/session'),
+    refresh: () => requests.post('/refresh'),
 });

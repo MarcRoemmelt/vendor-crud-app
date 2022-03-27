@@ -1,0 +1,44 @@
+version: '3.4'
+
+services:
+    mongo:
+        build: .
+        restart: always
+        secrets:
+            - mongo_initdb_root_password
+            - mongo_initdb_root_username
+            - mongo_user
+            - mongo_password
+        environment:
+            MONGO_INITDB_ROOT_USERNAME_FILE: /run/secrets/mongo_initdb_root_username
+            MONGO_INITDB_ROOT_PASSWORD_FILE: /run/secrets/mongo_initdb_root_password
+            MONGO_USER_FILE: /run/secrets/mongo_user
+            MONGO_PASSWORD_FILE: /run/secrets/mongo_password
+            MONGO_INITDB_DATABASE: mvp-factory-vendor-app
+        ports:
+            - 27017:27017
+
+    mongo-express:
+        image: mongo-express
+        restart: always
+        environment:
+            ME_CONFIG_MONGODB_ADMINUSERNAME: user
+            ME_CONFIG_MONGODB_ADMINPASSWORD: pass
+            ME_CONFIG_MONGODB_URL: mongodb://user:pass@mongo:27017/
+        ports:
+            - 8081:8081
+        depends_on:
+            - mongo
+
+volumes:
+    mongodbdata:
+
+secrets:
+    mongo_initdb_root_username:
+        file: ./mongodb_initdb_root_username
+    mongo_initdb_root_password:
+        file: ./mongodb_initdb_root_password
+    mongo_user:
+        file: ./mongodb_user
+    mongo_password:
+        file: ./mongodb_password

@@ -10,11 +10,12 @@ interface IUpdateProductDto {
     productName?: string;
     cost?: number;
 }
-export const productsApi = (requests: Requests) => ({
+export const createProductsApi = (requests: Requests) => ({
     all: () => requests.get('/products'),
+    bySellerId: (sellerId: string) => requests.get(`/products${sellerId ? `?sellerId=${sellerId}` : ''}`),
     byId: (productId: string) => requests.get(`/products/${productId}`),
     update: (productId: string, updates: IUpdateProductDto) => requests.patch(`/products/${productId}`, updates),
     del: (productId: string) => requests.del(`/products/${productId}`),
     create: (product: ICreateProductDto) => requests.post('/products', product),
-    buy: (payload: { productName: string; amount: number }) => requests.post('/buy', payload),
+    buy: (payload: { productId: string; amount: number }) => requests.post('/buy', payload),
 });

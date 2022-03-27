@@ -5,28 +5,20 @@ import { StyledPageTitle } from '@mr/shared/ui/text';
 
 import { RegisterForm } from './RegisterForm/RegisterForm';
 import { Role } from '@mr/client/data-access/user-api';
-import { useLogin } from './useLogin';
+import { ModalComponentProps } from '@mr/shared/ui/use-modal';
 
 const StyledCustomerRegister = styled.div``;
 
-interface ICustomerRegisterProps {
-    onClose: () => void;
-}
-export function CustomerRegister({ onClose }: ICustomerRegisterProps) {
-    const { present } = useLogin();
-
-    const goToLogin = () => {
-        onClose();
-        present();
-    };
-
+type ICustomerRegisterProps = ModalComponentProps;
+export function CustomerRegister(props: ICustomerRegisterProps) {
     return (
         <StyledCustomerRegister>
             <StyledPageTitle>
                 <FormattedMessage id="auth.register.Customer.title" defaultMessage="Register (Customer)" />
             </StyledPageTitle>
 
-            <RegisterForm goToLogin={goToLogin} role={Role.Buyer} />
+            <RegisterForm {...props} role={Role.Buyer} />
         </StyledCustomerRegister>
     );
 }
+CustomerRegister.key = 'customer-register';

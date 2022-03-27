@@ -1,0 +1,23 @@
+{
+    "root": "libs/client/ui/small-components",
+    "sourceRoot": "libs/client/ui/small-components/src",
+    "projectType": "library",
+    "tags": [],
+    "targets": {
+        "lint": {
+            "executor": "@nrwl/linter:eslint",
+            "outputs": ["{options.outputFile}"],
+            "options": {
+                "lintFilePatterns": ["libs/client/ui/small-components/**/*.{ts,tsx,js,jsx}"]
+            }
+        },
+        "test": {
+            "executor": "@nrwl/jest:jest",
+            "outputs": ["coverage/libs/client/ui/small-components"],
+            "options": {
+                "jestConfig": "libs/client/ui/small-components/jest.config.js",
+                "passWithNoTests": true
+            }
+        }
+    }
+}

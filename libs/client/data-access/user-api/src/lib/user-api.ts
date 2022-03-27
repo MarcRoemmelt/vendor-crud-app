@@ -1,4 +1,4 @@
-import type { Requests } from '@mr/shared/data-access/superagent';
+import { Requests } from '@mr/shared/data-access/superagent';
 
 export enum Role {
     Admin = 'admin',
@@ -18,14 +18,15 @@ interface ICreateUserDto {
     role: Role;
 }
 interface IPublicUpdateUserDto {
-    username?: string;
-    role?: Role;
+    username: string;
+    role: Role;
 }
-export const userApi = (requests: Requests) => ({
+export const createUserApi = (requests: Requests) => ({
     all: () => requests.get('/users'),
-    byId: (productId: string) => requests.get(`/users/${productId}`),
-    update: (productId: string, updates: IPublicUpdateUserDto) => requests.patch(`/users/${productId}`, updates),
+    byId: (userId: string) => requests.get(`/users/${userId}`),
+    update: (userId: string, updates: Partial<IPublicUpdateUserDto>) => requests.patch(`/users/${userId}`, updates),
     del: (userId: string) => requests.del(`/users/${userId}`),
     create: (user: ICreateUserDto) => requests.post('/users', user),
     deposit: (payload: Coins) => requests.post('/deposit', payload),
+    reset: () => requests.post('/reset'),
 });

@@ -1,0 +1,15 @@
+{
+    "root": "libs/shared/mongodb-dev",
+    "sourceRoot": "libs/shared/mongodb-dev/src",
+    "projectType": "library",
+    "targets": {
+        "serve": {
+            "executor": "@nrwl/workspace:run-commands",
+            "cwd": "libs/shared/mongodb-dev",
+            "options": {
+                "command": "docker-compose -f libs/shared/mongodb-dev/docker-compose.yml up"
+            }
+        }
+    },
+    "tags": []
+}

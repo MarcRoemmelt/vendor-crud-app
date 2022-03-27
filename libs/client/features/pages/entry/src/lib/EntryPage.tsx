@@ -1,37 +1,15 @@
-import { IcButton } from '@mr/client/ui/ic-button';
-import { Fragment } from 'react';
+import { Fragment, useEffect } from 'react';
+import { useRouter } from 'next/router';
 import { FormattedMessage } from 'react-intl';
 import styled from 'styled-components';
+import { observer } from 'mobx-react-lite';
 
-import { useVendorRegister, useCustomerRegister } from '@mr/client/features/authentication';
-
-const StyledPage = styled.div`
-    max-width: 1200px;
-    min-height: 100vh;
-    padding-bottom: 20%;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-`;
-const StyledPageTitle = styled.h1`
-    width: 100%;
-    display: flex;
-    justify-content: center;
-
-    text-align: center;
-    font-weight: bold;
-    font-size: 3em;
-    color: ${({ theme }) => theme.primaryColor};
-`;
-const StyledPageDescription = styled.h2`
-    max-width: 600px;
-
-    font-size: 1.6em;
-    text-align: center;
-    color: ${({ theme }) => theme.primaryColor};
-`;
+import { CustomerRegister, useAuthModals, useAuthStore, VendorRegister } from '@mr/client/features/authentication';
+import { IcButton } from '@mr/client/ui/ic-button';
+import { StyledPageDescription, StyledPageTitle } from '@mr/shared/ui/text';
+import { StyledPage } from '@mr/client/ui/small-components';
+import { useUserStore } from '@mr/client/features/user';
+import { Role } from '@mr/client/data-access/user-store';
 
 function HeaderSection() {
     return (
@@ -53,35 +31,58 @@ function HeaderSection() {
 const StyledButtons = styled.div`
     margin: 50px;
 `;
-
-interface IButtonProps {
-    showVendorRegister: () => void;
-    showCustomerRegister: () => void;
-}
-function Buttons({ showVendorRegister, showCustomerRegister }: IButtonProps) {
+function Buttons() {
+    const store = useAuthStore();
+    const showVendorRegister = () => {
+        store.setActiveModal(VendorRegister.key);
+    };
+    const showCustomerRegister = () => {
+        store.setActiveModal(CustomerRegister.key);
+    };
     return (
         <StyledButtons>
-            <IcButton onClick={showVendorRegister} size="xl">
+            <IcButton onPress={showVendorRegister} size="xl">
                 <FormattedMessage id="pages.entry.buttons.vendor" defaultMessage="I'm a vendor" />
             </IcButton>
 
-            <IcButton onClick={showCustomerRegister} size="xl">
+            <IcButton onPress={showCustomerRegister} size="xl">
                 <FormattedMessage id="pages.entry.buttons.customer" defaultMessage="I'm a customer" />
             </IcButton>
         </StyledButtons>
     );
 }
 
-export function EntryPage() {
-    const { present: showVendorRegister } = useVendorRegister();
-    const { present: showCustomerRegister } = useCustomerRegister();
+const StyledEntryPage = styled(StyledPage)`
+    margin-top: 160px;
+`;
+export const EntryPage = observer(() => {
+    useAuthModals();
+    useRedirect();
 
     return (
-        <StyledPage>
+        <StyledEntryPage>
             <HeaderSection />
-            <Buttons showVendorRegister={showVendorRegister} showCustomerRegister={showCustomerRegister} />
-        </StyledPage>
+            <Buttons />
+        </StyledEntryPage>
     );
-}
+});
 
 export default EntryPage;
+
+const useRedirect = () => {
+    const authStore = useAuthStore();
+    const userStore = useUserStore();
+    const { push } = useRouter();
+
+    useEffect(() => {
+        if (!authStore.isAuthenticated) return;
+        switch (userStore.currentUser.role) {
+            case Role.Seller:
+                push('/sell');
+                break;
+            case Role.Buyer:
+            case Role.Admin:
+                push('/buy');
+        }
+    }, [authStore, authStore.isAuthenticated, push, userStore, userStore.currentUser.role]);
+};

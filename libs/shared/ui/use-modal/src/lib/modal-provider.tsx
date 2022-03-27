@@ -1,82 +1,46 @@
-import React, { ReactNode, useState, useMemo, useCallback } from 'react';
-import { OverlayProvider, OverlayProps } from '@react-aria/overlays';
+import React, { ReactNode, useState, useCallback, HTMLAttributes } from 'react';
+import { OverlayProvider } from '@react-aria/overlays';
+import { OverlayTriggerState } from '@react-stately/overlays';
 
 import { ModalDisplay } from './modal-display';
 
 interface ModalProviderProps {
     children: ReactNode;
 }
+type Props<P> = { [key in keyof P]: P[key] };
+export type ModalComponentProps<P extends Record<string, any> = Record<string, any>> = {
+    state: OverlayTriggerState;
+    titleProps: HTMLAttributes<HTMLElement>;
+    data: P;
+} & Props<P>;
 
-export interface ModalComponentProps {
-    onClose: () => void;
-    isOpen: boolean;
-}
-
-type Present = (
-    modalKey: string,
-    component: React.ComponentType<ModalComponentProps>,
-    data: Record<string, any>,
+export type UpdateModals<P extends Record<string, any> = Record<string, any>> = (
+    key: string,
+    component: React.ComponentType<ModalComponentProps<P>>,
+    data: P,
+    state: ModalComponentProps['state'],
 ) => void;
 
-type Dismiss = (modalKey: string, onClose?: () => void | Promise<void>) => void;
-
-export interface ModalConfig {
-    isOpen: boolean;
-    data: Record<string, any> & OverlayProps;
-    component: React.ComponentType<ModalComponentProps>;
-    dismiss: Dismiss;
-    present: Present;
-}
-type ModalState = {
-    [key: string]: ModalConfig;
+export type ModalConfig<P = Record<string, any>> = {
+    key: string;
+    data: Record<string, any> & { state: OverlayTriggerState };
+    component: React.ComponentType<ModalComponentProps<P>>;
 };
-
-type UseModal = {
-    isOpen: boolean;
-    dismiss: Dismiss;
-    present: Present;
-};
-
+export type ModalState = { [key: string]: ModalConfig };
 export const ModalStateContext = React.createContext<ModalState | undefined>(undefined);
-export const ModalUpdateContext = React.createContext<UseModal | undefined>(undefined);
+export const ModalUpdateContext = React.createContext<UpdateModals | undefined>(undefined);
 
 // eslint-disable-next-line max-lines-per-function
 export const ModalProvider = ({ children }: ModalProviderProps) => {
     const [state, setState] = useState<ModalState>({});
 
-    const dismiss = useCallback((modalKey: string, onClose?: () => void | Promise<void>) => {
-        setState((prev) => ({
-            ...prev,
-            // eslint-disable-next-line security/detect-object-injection
-            [modalKey]: { ...prev[modalKey], isOpen: false },
-        }));
-
-        if (onClose) onClose();
+    const updateModals: UpdateModals = useCallback((key, component, data, state) => {
+        setState((prev) => ({ ...prev, [key]: { key, component, data: { ...data, state } } }));
     }, []);
-
-    const present = useCallback(
-        (modalKey, component: React.ComponentType<ModalComponentProps>, data: Record<string, any>) => {
-            setState((prev) => ({
-                ...prev,
-                // eslint-disable-next-line security/detect-object-injection
-                [modalKey]: { ...prev[modalKey], component, data, isOpen: true, dismiss },
-            }));
-        },
-        [dismiss],
-    );
-
-    const contextValue = useMemo(
-        () => ({
-            dismiss,
-            present,
-            isOpen: Object.values(state).some(({ isOpen }) => isOpen),
-        }),
-        [dismiss, present, state],
-    );
 
     return (
         <ModalStateContext.Provider value={state}>
-            <ModalUpdateContext.Provider value={contextValue}>
+            <ModalUpdateContext.Provider value={updateModals}>
                 <OverlayProvider>
                     {children}
                     <ModalDisplay />

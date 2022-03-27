@@ -1,10 +1,12 @@
-import { Fragment, useCallback, useRef } from 'react';
+import { Fragment, useRef } from 'react';
 import { OverlayContainer, useModal, useOverlay, usePreventScroll } from '@react-aria/overlays';
 import { FocusScope } from '@react-aria/focus';
+import { useDialog } from '@react-aria/dialog';
 
 import { useModalState } from './useModalState';
 import { ModalConfig } from './modal-provider';
 import styled from 'styled-components';
+import { mergeProps } from '@react-aria/utils';
 
 const StyledUnderlay = styled.div`
     position: fixed;
@@ -21,6 +23,9 @@ const StyledUnderlay = styled.div`
 
 const StyledModalContainer = styled.div`
     position: relative;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
 
     background: ${({ theme }) => theme.primaryColorContrast};
     color: ${({ theme }) => theme.primaryColor};
@@ -32,39 +37,36 @@ const StyledModalContainer = styled.div`
     box-shadow: ${({ theme }) => theme.boxShadowModal};
 `;
 
-const StyledDismissBucket = styled.div`
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-`;
-
 // eslint-disable-next-line max-lines-per-function
-function Modal({ component: Component, isOpen, data, dismiss, modalKey }: ModalConfig & { modalKey: string }) {
-    const ref = useRef(null);
+function Modal({ component: Component, data }: ModalConfig) {
+    const overlayRef = useRef<HTMLDivElement>(null);
     const { overlayProps, underlayProps } = useOverlay(
-        { isDismissable: true, isKeyboardDismissDisabled: true, ...data, isOpen },
-        ref,
+        {
+            isDismissable: true,
+            isKeyboardDismissDisabled: false,
+            isOpen: data.state.isOpen,
+            onClose: data.state.close,
+            ...data,
+        },
+        overlayRef,
     );
+
+    // Hide content outside the modal from screen readers.
+    const { modalProps } = useModal();
+
+    // Get props for the dialog and its title
+    const { dialogProps, titleProps } = useDialog({}, overlayRef);
 
     // Prevent scrolling while the modal is open, and hide content
     // outside the modal from screen readers.
     usePreventScroll();
-    const { modalProps } = useModal();
 
-    const handleDismiss = useCallback(() => {
-        if (data.isDismissable === false) return;
-        dismiss(modalKey);
-    }, [data.isDismissable, dismiss, modalKey]);
-
-    return isOpen ? (
+    return data.state.isOpen ? (
         <OverlayContainer>
             <StyledUnderlay {...underlayProps}>
-                <StyledDismissBucket onClick={handleDismiss} />
                 <FocusScope contain restoreFocus autoFocus>
-                    <StyledModalContainer {...overlayProps} {...modalProps} ref={ref}>
-                        <Component onClose={handleDismiss} isOpen={isOpen} {...data} />
+                    <StyledModalContainer {...mergeProps(overlayProps, modalProps, dialogProps)} ref={overlayRef}>
+                        <Component {...data} titleProps={titleProps} />
                     </StyledModalContainer>
                 </FocusScope>
             </StyledUnderlay>
@@ -74,10 +76,7 @@ function Modal({ component: Component, isOpen, data, dismiss, modalKey }: ModalC
 
 export function ModalDisplay() {
     const modalState = useModalState();
-    const modals = Object.keys(modalState).map((modalKey) => (
-        // eslint-disable-next-line security/detect-object-injection
-        <Modal key={modalKey} modalKey={modalKey} {...modalState[modalKey]} />
-    ));
+    const modals = Object.entries(modalState).map(([_, modalConfig]) => <Modal {...modalConfig} />);
 
     // eslint-disable-next-line react/jsx-no-useless-fragment
     return <Fragment>{modals}</Fragment>;

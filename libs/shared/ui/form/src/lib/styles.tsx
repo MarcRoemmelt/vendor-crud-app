@@ -9,6 +9,8 @@ export const StyledFieldset = styled.fieldset`
 `;
 
 export const StyledForm = styled(Form)`
+    max-width: 90%;
+    width: 400px;
     display: flex;
     flex-direction: column;
     padding: 20px 0;
