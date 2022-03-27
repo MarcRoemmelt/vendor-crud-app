@@ -1,13 +1,20 @@
 # MVP-Factory Take-Home-Task
 
+[https://vendor-crud-app-qcm50l5ks-marcroemmelt.vercel.app/](https://vendor-crud-app-qcm50l5ks-marcroemmelt.vercel.app/)
+
 ## Serve Locally
 
-Run `npm run serve` to run the project locally. (requires `docker-compose` for the local database)
+Run
+- `pnpm install` (install via `npm i -g pnpm` if necessary)
+- `npx nx serve mongodb` (requires `docker-compose` for the local database)
+- `npx nx serve server` (runs at [localhost:3333](http://localhost:3333) by default)
+- `npx nx serve client` (runs at [localhost:4200](http://localhost:4200) by default)
 
 ### Server Side Framework: [NestJs](https://nestjs.com/)
 
 ### Routes
 
+**[Swagger](https://vendor-crud-app.herokuapp.com/api/static/index.html)**
 **[Postman](https://www.postman.com/marcroemmelt/workspace/mvp-factory-take-home-task)**
 
 ### Client Side Framework: [ReactJs](https://reactjs.org/)
