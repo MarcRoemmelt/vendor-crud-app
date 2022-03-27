@@ -142,6 +142,7 @@
     "main": "",
     "private": true,
     "scripts": {
+        "build": "NODE_ENV=production nx build server --prod",
         "start": "NODE_ENV=production node dist/apps/server/main.js",
         "test": "nx test"
     }
