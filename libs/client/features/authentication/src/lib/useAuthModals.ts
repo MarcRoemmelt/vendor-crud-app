@@ -3,20 +3,16 @@ import { useModal } from '@mr/shared/ui/use-modal';
 import { LoginForm } from './LoginForm/LoginForm';
 import { useEffect } from 'react';
 import { useAuthStore } from './AuthProvider';
-import {
-    CustomerRegisterKey,
-    DynamicCustomerRegister,
-    DynamicVendorRegister,
-    VendorRegisterKey,
-} from './dynamicComponents';
+import VendorRegister from './VendorRegister';
+import CustomerRegister from './CustomerRegister';
 
 const vendorRegister = {
-    component: DynamicVendorRegister,
-    key: VendorRegisterKey,
+    component: VendorRegister,
+    key: VendorRegister.key,
 };
 const customerRegister = {
-    component: DynamicCustomerRegister,
-    key: CustomerRegisterKey,
+    component: CustomerRegister,
+    key: CustomerRegister.key,
 };
 const login = {
     component: LoginForm,

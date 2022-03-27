@@ -4,12 +4,7 @@ import { FormattedMessage } from 'react-intl';
 import styled from 'styled-components';
 import { observer } from 'mobx-react-lite';
 
-import {
-    CustomerRegisterKey,
-    useAuthModals,
-    useAuthStore,
-    VendorRegisterKey,
-} from '@mr/client/features/authentication';
+import { CustomerRegister, VendorRegister, useAuthModals, useAuthStore } from '@mr/client/features/authentication';
 import { IcButton } from '@mr/client/ui/ic-button';
 import { StyledPageDescription, StyledPageTitle } from '@mr/shared/ui/text';
 import { StyledPage } from '@mr/client/ui/small-components';
@@ -39,10 +34,10 @@ const StyledButtons = styled.div`
 function Buttons() {
     const store = useAuthStore();
     const showVendorRegister = () => {
-        store.setActiveModal(VendorRegisterKey);
+        store.setActiveModal(VendorRegister.key);
     };
     const showCustomerRegister = () => {
-        store.setActiveModal(CustomerRegisterKey);
+        store.setActiveModal(CustomerRegister.key);
     };
     return (
         <StyledButtons>

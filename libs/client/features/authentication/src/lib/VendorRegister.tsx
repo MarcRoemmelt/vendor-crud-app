@@ -10,7 +10,7 @@ const StyledVendorRegister = styled.div``;
 
 type IVendorRegisterProps = ModalComponentProps;
 
-function VendorRegister(props: IVendorRegisterProps) {
+export function VendorRegister(props: IVendorRegisterProps) {
     return (
         <StyledVendorRegister>
             <StyledPageTitle>
@@ -21,4 +21,5 @@ function VendorRegister(props: IVendorRegisterProps) {
         </StyledVendorRegister>
     );
 }
+VendorRegister.key = 'vendor-register';
 export default VendorRegister;
