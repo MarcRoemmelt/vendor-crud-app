@@ -1,6 +1,6 @@
 # MVP-Factory Take-Home-Task
 
-[https://vendor-crud-app-qcm50l5ks-marcroemmelt.vercel.app/](https://vendor-crud-app-qcm50l5ks-marcroemmelt.vercel.app/)
+[https://vendor-crud-app.vercel.app/](https://vendor-crud-app.vercel.app/)
 
 ## Serve Locally
 
