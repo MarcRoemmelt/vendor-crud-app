@@ -1,6 +1,6 @@
 import { ExecutionContext, Type } from '@nestjs/common';
 import { Ability, InferSubjects, Subject } from '@casl/ability';
-import { Action } from '@mr/server/features/casl';
+import { Action } from './action.enum';
 
 export interface IPolicyHandler {
     handle(ability: AppAbility, context: ExecutionContext): boolean | Promise<boolean>;
