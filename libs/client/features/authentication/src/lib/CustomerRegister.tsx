@@ -22,3 +22,4 @@ export function CustomerRegister(props: ICustomerRegisterProps) {
     );
 }
 CustomerRegister.key = 'customer-register';
+export default CustomerRegister;

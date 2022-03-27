@@ -7,6 +7,13 @@ import { Fragment } from 'react';
 
 import { GlobalFilter } from './GlobalFilter';
 
+declare module 'react-table' {
+    // eslint-disable-next-line @typescript-eslint/no-empty-interface
+    interface TableState<D> extends UseGlobalFiltersState<D> {}
+    // eslint-disable-next-line @typescript-eslint/no-empty-interface
+    interface TableInstance<D> extends UseGlobalFiltersInstanceProps<D> {}
+}
+
 interface IProductListProps<D extends Record<string, any> = Record<string, any>> {
     columns: Column<D>[];
     products: readonly D[];

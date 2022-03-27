@@ -4,4 +4,5 @@ export * from './lib/LoginForm/LoginForm';
 export * from './lib/AuthProvider';
 export * from './lib/useAuthModals';
 export * from './lib/RouteGuard';
+export * from './lib/dynamicComponents';
 export * from './lib/useMultiSessionWarning/useMultiSessionWarning';

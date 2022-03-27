@@ -80,7 +80,10 @@ export type Requests = {
     get<R>(url: string): Promise<Res<R>>;
     put<R, B extends Record<string | number | symbol, any>>(url: string, body?: B): Promise<Res<R>>;
     patch<R, B extends Record<string | number | symbol, any>>(url: string, body?: B): Promise<Res<R>>;
-    post<R, B extends Record<string | number | symbol, any> | void = void>(url: string, body?: B): Promise<Res<R>>;
+    post<R, B extends Record<string | number | symbol, any> = Record<string | number | symbol, any>>(
+        url: string,
+        body?: B,
+    ): Promise<Res<R>>;
 };
 
 // eslint-disable-next-line max-lines-per-function
@@ -100,21 +103,21 @@ export const configureSuperAgent = ({
             superagent
                 .put(`${API_ROOT}${url}`)
                 .use(tokenPlugin(getAccessToken))
-                .send(body)
+                .send(body ?? {})
                 .then(responseBody)
                 .catch(handleErrors),
-        patch: (url, body = {} as any) =>
+        patch: (url, body) =>
             superagent
                 .patch(`${API_ROOT}${url}`)
                 .use(tokenPlugin(getAccessToken))
-                .send(body)
+                .send(body ?? {})
                 .then(responseBody)
                 .catch(handleErrors),
-        post: (url, body = {} as any) =>
+        post: (url, body) =>
             superagent
                 .post(`${API_ROOT}${url}`)
                 .use(tokenPlugin(getAccessToken))
-                .send(body)
+                .send(body ?? {})
                 .then(responseBody)
                 .catch(handleErrors),
     };

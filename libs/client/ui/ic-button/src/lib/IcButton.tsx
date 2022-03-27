@@ -100,7 +100,7 @@ const classes = (isHovered: boolean, isFocusVisible: boolean, isPressed: boolean
     });
 
 /* eslint-disable */
-const AriaButton = forwardRef<HTMLElement, ButtonProps>((props, forwardedRef) => {
+const AriaButton = forwardRef<HTMLElement, Omit<ButtonProps, 'ref'>>((props, forwardedRef) => {
     const newRef = useRef(null);
 
     const ref = forwardedRef && 'current' in forwardedRef ? forwardedRef : newRef;
@@ -111,16 +111,20 @@ const AriaButton = forwardRef<HTMLElement, ButtonProps>((props, forwardedRef) =>
     const buttonClasses = classes(isPressed, isFocusVisible, isHovered);
 
     const { onPress, ...elementProps } = props;
-    const mergedProps = mergeProps(buttonProps, focusProps, hoverProps, { className: buttonClasses }, elementProps);
+    const mergedProps = mergeProps(buttonProps, focusProps, hoverProps, { className: buttonClasses });
 
     if (hasHref(props))
         return (
             <Link href={props.href}>
-                <StyledIcLink {...mergedProps} />
+                <StyledIcLink {...mergedProps} {...elementProps} />
             </Link>
         );
 
-    return <StyledIcButton {...mergedProps}>{props.children}</StyledIcButton>;
+    return (
+        <StyledIcButton {...mergedProps} {...elementProps}>
+            {props.children}
+        </StyledIcButton>
+    );
 });
 function hasHref<T extends ReturnType<typeof mergeProps>>(props: T): props is T & { href: string } {
     return typeof props['href'] === 'string';

@@ -65,6 +65,7 @@ function _EditProductForm({ state, productId }: IEditProductFormProps) {
 }
 _EditProductForm.key = 'edit-product-form';
 export const EditProductForm = observer(_EditProductForm);
+export default EditProductForm;
 
 function ProductnameInput() {
     return (

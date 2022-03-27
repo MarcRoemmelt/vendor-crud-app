@@ -11,7 +11,6 @@ type Props<P> = { [key in keyof P]: P[key] };
 export type ModalComponentProps<P extends Record<string, any> = Record<string, any>> = {
     state: OverlayTriggerState;
     titleProps: HTMLAttributes<HTMLElement>;
-    data: P;
 } & Props<P>;
 
 export type UpdateModals<P extends Record<string, any> = Record<string, any>> = (

@@ -3,6 +3,7 @@ import { useCallback, useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { Row, TableRowProps } from 'react-table';
 import styled from 'styled-components';
+import dynamic from 'next/dynamic';
 
 import { IProduct } from '@mr/client/data-access/products-store';
 import { useProductsStore } from '@mr/client/features/products';
@@ -10,8 +11,7 @@ import { IcButton } from '@mr/client/ui/ic-button';
 import { Spinner } from '@mr/client/ui/small-components';
 import { useModal } from '@mr/shared/ui/use-modal';
 
-import { EditProductForm } from './EditProductForm';
-
+const DynamicEditProductForm = dynamic(() => import('./EditProductForm'));
 const StyledProductListItem = styled.li`
     display: flex;
     align-items: flex-start;
@@ -78,8 +78,8 @@ const EditSection = observer(({ product }: { product: IProduct }) => {
     const [isLoading, setIsLoading] = useState(false);
 
     const { present: editProduct } = useModal({
-        component: EditProductForm,
-        key: EditProductForm.key,
+        component: DynamicEditProductForm,
+        key: 'edit-product-form',
         props: { productId: product._id },
     });
     const productsStore = useProductsStore();

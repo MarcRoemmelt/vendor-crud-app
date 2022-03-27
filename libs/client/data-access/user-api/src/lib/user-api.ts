@@ -22,11 +22,12 @@ interface IPublicUpdateUserDto {
     role: Role;
 }
 export const createUserApi = (requests: Requests) => ({
-    all: () => requests.get('/users'),
-    byId: (userId: string) => requests.get(`/users/${userId}`),
-    update: (userId: string, updates: Partial<IPublicUpdateUserDto>) => requests.patch(`/users/${userId}`, updates),
-    del: (userId: string) => requests.del(`/users/${userId}`),
-    create: (user: ICreateUserDto) => requests.post('/users', user),
-    deposit: (payload: Coins) => requests.post('/deposit', payload),
-    reset: () => requests.post('/reset'),
+    all: <R>() => requests.get<R>('/users'),
+    byId: <R>(userId: string) => requests.get<R>(`/users/${userId}`),
+    update: <R, B extends Partial<IPublicUpdateUserDto> = Partial<IPublicUpdateUserDto>>(userId: string, updates: B) =>
+        requests.patch<R, B>(`/users/${userId}`, updates),
+    del: <R>(userId: string) => requests.del<R>(`/users/${userId}`),
+    create: <R, B extends ICreateUserDto = ICreateUserDto>(user: B) => requests.post<R, B>('/users', user),
+    deposit: <R, B extends Coins = Coins>(payload: B) => requests.post<R, B>('/deposit', payload),
+    reset: <R>() => requests.post<R>('/reset'),
 });

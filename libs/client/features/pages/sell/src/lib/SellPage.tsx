@@ -2,6 +2,8 @@ import { Fragment, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import styled from 'styled-components';
 import { defineMessage, FormattedMessage } from 'react-intl';
+import { observer } from 'mobx-react-lite';
+import dynamic from 'next/dynamic';
 
 import { StyledPage } from '@mr/client/ui/small-components';
 import { IcButton } from '@mr/client/ui/ic-button';
@@ -13,9 +15,9 @@ import { useUserStore } from '@mr/client/features/user';
 import { useProductsStore } from '@mr/client/features/products';
 import { Role } from '@mr/client/data-access/user-store';
 
-import { NewProductForm } from './NewProductForm/NewProductForm';
 import { SellProductListItem } from './SellProductListItem';
-import { observer } from 'mobx-react-lite';
+
+const DynamicNewProductForm = dynamic(() => import('./NewProductForm/NewProductForm'));
 
 const links: HeaderLinkProps[] = [
     {
@@ -123,7 +125,7 @@ const StyledNewProductButtonContainer = styled.div`
 `;
 
 const NewProductButton = () => {
-    const { present } = useModal({ component: NewProductForm, key: NewProductForm.key });
+    const { present } = useModal({ component: DynamicNewProductForm, key: 'new-product-form' });
 
     return (
         <StyledNewProductButtonContainer>

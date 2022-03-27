@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { defineMessage, FormattedMessage, useIntl } from 'react-intl';
 import { toast } from 'react-toastify';
+import dynamic from 'next/dynamic';
 
 import { StyledPage } from '@mr/client/ui/small-components';
 import { Header, HeaderLinkProps } from '@mr/shared/ui/header';
@@ -10,8 +11,9 @@ import { useAuthStore } from '@mr/client/features/authentication';
 import { useModal } from '@mr/shared/ui/use-modal';
 import { useUserStore } from '@mr/client/features/user';
 
-import { ManageProfileForm } from './ManageProfileForm/ManageProfileForm';
 import { UserData } from './UserData/UserData';
+
+const DynamicManageProfileForm = dynamic(() => import('./ManageProfileForm/ManageProfileForm'));
 
 const links: HeaderLinkProps[] = [
     {
@@ -68,7 +70,7 @@ const StyledDelete = styled(IcButton)`
 `;
 
 const Buttons = () => {
-    const { present: editProfile } = useModal({ component: ManageProfileForm, key: ManageProfileForm.key });
+    const { present: editProfile } = useModal({ component: DynamicManageProfileForm, key: 'manage-profile-form' });
     const authStore = useAuthStore();
     const userStore = useUserStore();
     const intl = useIntl();

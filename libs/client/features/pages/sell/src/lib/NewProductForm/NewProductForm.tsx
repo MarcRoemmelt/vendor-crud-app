@@ -54,6 +54,7 @@ export function NewProductForm({ state }: ModalComponentProps) {
     );
 }
 NewProductForm.key = 'new-product-form';
+export default NewProductForm;
 
 function ProductnameInput() {
     return (

@@ -39,7 +39,7 @@ export function createUserStore({ api, authStore }: UserStoreOptions) {
             return this.fetchUser();
         },
         async updateUser(user: IManageProfileFormValues) {
-            const { success, data: updates, error } = await api.update(this.currentUser._id, user);
+            const { success, data: updates, error } = await api.update<IUser>(this.currentUser._id, user);
             if (success) {
                 this.currentUser.update(updates);
             }
@@ -48,7 +48,7 @@ export function createUserStore({ api, authStore }: UserStoreOptions) {
             }
         },
         async resetBalance() {
-            const { success, data: updates, error } = await api.reset();
+            const { success, data: updates, error } = await api.reset<IUser>();
             if (success) {
                 this.currentUser.update(updates);
             }
@@ -57,7 +57,7 @@ export function createUserStore({ api, authStore }: UserStoreOptions) {
             }
         },
         async fetchUser() {
-            const { success, data: user, error } = await api.byId(this.currentUser._id);
+            const { success, data: user, error } = await api.byId<IUser>(this.currentUser._id);
             if (success) {
                 this.currentUser.update(user);
             }
@@ -75,7 +75,7 @@ export function createUserStore({ api, authStore }: UserStoreOptions) {
             }
         },
         async deposit(coins: Coins) {
-            const { success, data: user, error } = await api.deposit(coins);
+            const { success, data: user, error } = await api.deposit<IUser>(coins);
             if (success) {
                 this.currentUser.update(user);
             }

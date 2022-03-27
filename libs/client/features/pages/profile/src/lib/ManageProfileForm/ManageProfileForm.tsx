@@ -55,6 +55,7 @@ const _ManageProfileForm = ({ state }: ModalComponentProps) => {
 };
 _ManageProfileForm.key = 'manage-profile-form';
 export const ManageProfileForm = observer(_ManageProfileForm);
+export default ManageProfileForm;
 
 function UsernameInput() {
     return (
