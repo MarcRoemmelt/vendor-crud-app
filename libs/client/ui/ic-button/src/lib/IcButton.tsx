@@ -130,7 +130,7 @@ function hasHref<T extends ReturnType<typeof mergeProps>>(props: T): props is T 
     return typeof props['href'] === 'string';
 }
 export const IcButton = forwardRef<HTMLElement, ButtonProps>((props, ref) => {
-    return <AriaButton {...props} ref={ref} />;
+    return <AriaButton type="button" {...props} ref={ref} />;
 });
 
 export default IcButton;
