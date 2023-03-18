@@ -86,7 +86,7 @@
         "@nrwl/storybook": "13.9.3",
         "@nrwl/web": "13.9.3",
         "@nrwl/workspace": "13.9.3",
-        "@swc/cli": "0.1.55",
+        "@swc/cli": "0.1.62",
         "@swc/core": "1.2.159",
         "@swc/helpers": "0.3.8",
         "@swc/jest": "0.2.20",
