@@ -89,7 +89,7 @@
         "@swc/cli": "0.1.55",
         "@swc/core": "1.2.159",
         "@swc/helpers": "0.3.8",
-        "@swc/jest": "0.2.20",
+        "@swc/jest": "0.2.24",
         "@testing-library/react": "12.1.4",
         "@testing-library/react-hooks": "7.0.2",
         "@types/jest": "27.4.1",
