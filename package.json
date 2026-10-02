@@ -90,7 +90,7 @@
         "@swc/core": "1.2.159",
         "@swc/helpers": "0.3.8",
         "@swc/jest": "0.2.20",
-        "@testing-library/react": "12.1.4",
+        "@testing-library/react": "12.1.5",
         "@testing-library/react-hooks": "7.0.2",
         "@types/jest": "27.4.1",
         "@types/node": "16.11.26",
